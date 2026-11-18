@@ -28,11 +28,11 @@ export function Rich({ text }: { text: string }) {
 }
 
 /** The system built in a role, drawn as a pipeline with signals flowing through it. */
-function SystemFlow({ steps, active }: { steps: string[]; active: boolean }) {
+function SystemFlow({ steps, active, label = "System built" }: { steps: string[]; active: boolean; label?: string }) {
   return (
     <div className="relative overflow-hidden rounded-xl border border-line bg-bg/50 p-4 md:p-5">
       <div className="mb-3 flex items-center justify-between font-mono text-[9.5px] uppercase tracking-[0.18em] text-mute">
-        <span>System built</span>
+        <span>{label}</span>
         <span className={`flex items-center gap-1.5 ${active ? "text-cyan" : ""}`}>
           <span className={`h-1.5 w-1.5 rounded-full ${active ? "animate-pulse bg-cyan" : "bg-mute/40"}`} /> {active ? "live" : "idle"}
         </span>
@@ -75,7 +75,7 @@ function RolePanel({ role, index, onActive }: { role: Role; index: number; onAct
     if (active) onActive(index);
   }, [active, index, onActive]);
 
-  const Icon = role.kind === "Venture" ? Rocket : Briefcase;
+  const Icon = role.kind === "Venture" ? Rocket : role.kind === "Teaching" ? GraduationCap : Briefcase;
 
   return (
     <article id={`role-${role.id}`} ref={ref} className="scroll-mt-28" aria-labelledby={`role-h-${role.id}`}>
@@ -108,7 +108,7 @@ function RolePanel({ role, index, onActive }: { role: Role; index: number; onAct
         <p className="relative mt-5 max-w-2xl font-display text-[clamp(1.1rem,1.7vw,1.4rem)] font-light leading-snug tracking-tight text-ink/85">{role.headline}</p>
 
         <div className="relative mt-7">
-          <SystemFlow steps={role.flow} active={active} />
+          <SystemFlow steps={role.flow} active={active} label={role.flowLabel} />
         </div>
 
         <ul className={`relative mt-7 grid gap-3 ${role.points.length > 1 ? "md:grid-cols-2" : ""}`}>
@@ -302,8 +302,8 @@ function Teaching() {
       <ul className="mt-8 divide-y divide-line border-y border-line">
         {teaching.map((t, i) => (
           <Reveal as="li" key={t.course} delay={Math.min(i, 6) * 0.03} className="group grid grid-cols-12 items-baseline gap-3 py-4 transition-colors hover:bg-bg-2/40 md:px-3">
-            <span className="col-span-12 font-mono text-[10px] uppercase tracking-[0.14em] text-mute md:col-span-2">{t.period}</span>
-            <span className={`col-span-12 font-display text-[16px] tracking-tight md:col-span-3 ${t.role.includes("Head") || t.role.includes("Senior") || t.role.includes("Instructor") ? "text-cyan" : "text-ink/80"}`}>{t.role}</span>
+            <span className="col-span-12 font-mono text-[10px] uppercase tracking-[0.14em] text-mute md:col-span-2">{t.period || "\u00a0"}</span>
+            <span className={`col-span-12 font-display text-[16px] tracking-tight md:col-span-3 ${/Head|Senior|Instructor/.test(t.role) ? "text-cyan" : "text-ink/80"}`}>{t.role}</span>
             <span className="col-span-9 text-[14px] text-ink/85 md:col-span-5">{t.course}</span>
             <span className="col-span-3 text-right font-mono text-[10px] uppercase tracking-[0.12em] text-mute md:col-span-2">{t.org}</span>
           </Reveal>

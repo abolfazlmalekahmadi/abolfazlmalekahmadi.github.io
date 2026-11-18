@@ -113,6 +113,15 @@ export function buildKnowledge(): Fact[] {
     ],
   });
 
+  if (site.phd.open) {
+    facts.push({
+      id: "phd",
+      keywords: ["phd", "doctorate", "doctoral", "position", "positions", "looking", "available", "student", "apply", "supervise", "lab", "open"],
+      text: `Yes — ${site.phd.badge.toLowerCase()}${site.phd.start ? ` (${site.phd.start})` : ""}. ${site.phd.pitch} The quickest way to reach out is the form in the PhD section, which goes straight to my inbox.`,
+      sources: [sec("phd", "PhD — get in touch")],
+    });
+  }
+
   facts.push({
     id: "philosophy",
     keywords: ["philosophy", "believe", "future", "why", "trust", "trustworthy", "reliable", "interpretable"],

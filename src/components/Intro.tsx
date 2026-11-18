@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { site } from "@/data/site";
 import { useExperience } from "@/lib/experience";
 import { sceneState } from "@/lib/sceneStore";
+import Brand from "./Brand";
 import Magnetic from "./Magnetic";
 
 const BOOT = [
@@ -102,7 +103,7 @@ export default function Intro() {
         >
           {/* Top bar */}
           <div className="absolute inset-x-0 top-0 flex items-center justify-between px-5 py-5 md:px-10">
-            <span className="font-display text-sm font-semibold tracking-[0.32em] text-ink/80">{site.brand}</span>
+            <Brand dim />
             <button
               type="button"
               onClick={skip}

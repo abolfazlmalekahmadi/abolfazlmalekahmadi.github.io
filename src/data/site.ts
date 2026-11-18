@@ -9,7 +9,9 @@
 export const site = {
   name: { first: "Abolfazl", last: "Malekahmadi" },
   shortName: "A. Malekahmadi",
-  brand: "NEURAL",
+  /** Wordmark in the nav / intro, and the monogram in the badge + favicon. */
+  brand: "MALEKAHMADI",
+  monogram: "AM",
   tagline: "Beyond Intelligence.",
   role: "AI Researcher & Engineer",
   eyebrow: "AI RESEARCHER & ENGINEER · SHARIF UNIVERSITY OF TECHNOLOGY",
@@ -55,6 +57,37 @@ export const site = {
 
   /** Path to the CV inside /public. Set to null to hide every "CV" button. */
   cv: "/Abolfazl_Malekahmadi_CV.pdf" as string | null,
+
+  /**
+   * PhD search announcement. Set `open: false` to hide the badge, nav button
+   * and section everywhere.
+   */
+  phd: {
+    open: true,
+    /** e.g. "Fall 2027". Leave null if flexible — it is then not shown. */
+    start: null as string | null,
+    badge: "Open to PhD positions",
+    pitch:
+      "I am looking for a PhD position where I can work on AI that is reliable, interpretable and useful in the real world — especially in medical imaging, foundation models and agentic systems.",
+    /** Shown as "What I bring". **bold** is supported. */
+    bring: [
+      "**First-author** paper at the **ICML 2024** Foundation Model Workshop",
+      "AI team lead on a **Scientific Reports** study validated on **906 patients**",
+      "A **registered patent** in AI-driven stroke diagnosis",
+      "**Production LLM systems** — multi-agent pipelines and multi-LLM serving",
+      "**Head TA** for Deep Learning and Generative AI at Sharif",
+    ],
+    /**
+     * Where form submissions go. No backend needed:
+     * - "formsubmit": works with just the email below. The very first submission
+     *   sends an activation email to that inbox — click "Activate Form" once.
+     * - "web3forms": get a free key at web3forms.com and put it in `web3formsKey`.
+     */
+    form: {
+      provider: "formsubmit" as "formsubmit" | "web3forms",
+      web3formsKey: null as string | null,
+    },
+  },
 
   contact: {
     email: "abolfazlmalekahmadi@gmail.com" as string | null,

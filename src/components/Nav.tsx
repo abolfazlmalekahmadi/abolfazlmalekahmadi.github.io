@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { navItems } from "@/data/sections";
 import { site } from "@/data/site";
 import { useExperience } from "@/lib/experience";
+import Brand from "./Brand";
 import { useActiveSection } from "./useActiveSection";
 
 export default function Nav() {
@@ -55,12 +56,7 @@ export default function Nav() {
           className="flex items-center gap-3"
           data-cursor="TOP"
         >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inset-0 animate-ping rounded-full bg-cyan/70" />
-            <span className="relative h-2 w-2 rounded-full bg-cyan" />
-          </span>
-          <span className="font-display text-sm font-semibold tracking-[0.32em] text-ink">{site.brand}</span>
-          <span className="hidden font-mono text-[10px] tracking-[0.2em] text-mute lg:inline">/ {site.shortName}</span>
+          <Brand showRole />
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">
@@ -88,6 +84,26 @@ export default function Nav() {
             );
           })}
         </ul>
+
+        {site.phd.open && (
+          <a
+            href="#phd"
+            onClick={(e) => {
+              e.preventDefault();
+              go("phd");
+            }}
+            data-cursor="PHD"
+            className={`hidden items-center gap-2 rounded-full border px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] transition-colors lg:inline-flex ${
+              active === "phd" ? "border-cyan bg-cyan text-bg" : "border-cyan/40 bg-cyan/10 text-cyan hover:bg-cyan/20"
+            }`}
+          >
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inset-0 animate-ping rounded-full bg-current opacity-60" />
+              <span className="relative h-1.5 w-1.5 rounded-full bg-current" />
+            </span>
+            PhD
+          </a>
+        )}
 
         <button
           type="button"
@@ -127,6 +143,18 @@ export default function Nav() {
                 </motion.li>
               ))}
             </ul>
+            {site.phd.open && (
+              <a
+                href="#phd"
+                onClick={(e) => {
+                  e.preventDefault();
+                  go("phd");
+                }}
+                className="mt-10 inline-flex items-center gap-3 self-start rounded-full border border-cyan/40 bg-cyan/10 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-cyan"
+              >
+                <span className="h-2 w-2 animate-pulse rounded-full bg-cyan" /> {site.phd.badge}
+              </a>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

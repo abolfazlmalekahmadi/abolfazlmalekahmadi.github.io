@@ -8,7 +8,7 @@ export default function Footer() {
           © {new Date().getFullYear()} {site.name.first} {site.name.last}
         </span>
         <span className="text-ink/60">
-          {site.brand} — {site.tagline}
+          {site.monogram} — {site.tagline}
         </span>
         <span>{site.location}</span>
       </div>

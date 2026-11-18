@@ -13,7 +13,7 @@ import { sceneState } from "@/lib/sceneStore";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/** SCENE 09 — The final connection. Everything converges into the core. */
+/** SCENE 10 — The final connection. Everything converges into the core. */
 export default function Finale() {
   const root = useRef<HTMLElement>(null);
   const q1 = useRef<HTMLDivElement>(null);

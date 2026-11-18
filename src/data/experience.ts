@@ -11,11 +11,13 @@ export type Role = {
   title: string;
   place: string;
   period: string;
-  kind: "Industry" | "Venture";
+  kind: "Industry" | "Teaching" | "Venture";
   /** One line that sums the role up. */
   headline: string;
   /** The system built in this role, left → right. Drawn as an animated pipeline. */
   flow: string[];
+  /** Label above the flow diagram (default "System built"). */
+  flowLabel?: string;
   points: RolePoint[];
   stack: string[];
 };
@@ -49,6 +51,36 @@ export const roles: Role[] = [
       },
     ],
     stack: ["Multi-agent", "Tool use", "RAG", "Continuous batching", "PagedAttention", "FP8 / GPTQ / AWQ", "Distillation", "Huawei ModelArts", "DataArts"],
+  },
+  {
+    id: "rahnema",
+    org: "Rahnema College",
+    title: "Machine Learning Instructor",
+    place: "Tehran, Iran · On-site",
+    period: "Oct 2026 — Present",
+    kind: "Teaching",
+    headline: "Teaching engineers to build AI agents — and ship them in containers.",
+    flow: ["LLM agents", "Tool use & function calling", "Multi-step reasoning", "Docker & Compose", "Deployed agent projects"],
+    flowLabel: "Curriculum",
+    points: [
+      {
+        lead: "Agentic AI",
+        text: "Taught **Agentic AI**: **LLM-based agents**, **tool use**, **function calling** and **multi-step reasoning**.",
+      },
+      {
+        lead: "Docker, hands-on",
+        text: "Delivered hands-on **Docker** training: **containerizing applications**, writing **Dockerfiles**, and using **Docker Compose** for multi-service setups.",
+      },
+      {
+        lead: "End-to-end projects",
+        text: "Guided students in **building and deploying containerized AI-agent projects end to end**.",
+      },
+      {
+        lead: "Machine Learning Bootcamp",
+        text: "Instructor of Rahnema's **Machine Learning Bootcamp**, with a focus on **model serving**, **Docker** and **Retrieval-Augmented Generation (RAG)**.",
+      },
+    ],
+    stack: ["Agentic AI", "Function calling", "Docker", "Docker Compose", "RAG"],
   },
   {
     id: "sharif-icds",
@@ -146,7 +178,7 @@ export const roles: Role[] = [
 
 /** Big numbers for the engineering track — every one is countable from the CV. */
 export const engineeringStats = [
-  { value: 5, suffix: "", label: "Organisations", note: "Fanap · Sharif · MCINEXT · Tapsell · Zistagen" },
+  { value: 6, suffix: "", label: "Organisations", note: "Fanap · Rahnema · Sharif · MCINEXT · Tapsell · Zistagen" },
   { value: 2, suffix: "", label: "Startups co-founded", note: "Beast Stroke · Genetic screening" },
   { value: 3, suffix: "", label: "LLM families fine-tuned", note: "Llama · Mistral · Qwen" },
   { value: 1, suffix: "", label: "Registered patent", note: "Acute ischemic stroke" },
@@ -160,7 +192,8 @@ export const teachingStats = [
 ];
 
 export const teaching: { role: string; course: string; period: string; org: string }[] = [
-  { role: "Instructor", course: "ML: model serving, Docker & RAG", period: "Present", org: "Rahnama College" },
+  { role: "ML Instructor", course: "Agentic AI & Docker — agents, tool use, function calling, Compose", period: "Oct 2026 — Present", org: "Rahnema College" },
+  { role: "Bootcamp Instructor", course: "Machine Learning Bootcamp — model serving, Docker & RAG", period: "", org: "Rahnema College" },
   { role: "Bootcamp Mentor & Instructor", course: "ML, AI Fundamentals, AI in Industry, Python", period: "2024 — 2025", org: "Sharif Innovation Center" },
   { role: "Head TA", course: "Generative AI — Dr. Seyyedsalehi", period: "Spring 2025", org: "Sharif" },
   { role: "TA", course: "Machine Learning — Dr. Sharifi", period: "Spring 2025", org: "Sharif" },

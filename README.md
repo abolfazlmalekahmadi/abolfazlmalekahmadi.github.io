@@ -1,4 +1,4 @@
-# NEURAL — Abolfazl Malekahmadi
+# Abolfazl Malekahmadi — Portfolio
 
 Cinematic research portfolio. Next.js (static export) · React Three Fiber · GSAP ScrollTrigger · Framer Motion · Lenis.
 

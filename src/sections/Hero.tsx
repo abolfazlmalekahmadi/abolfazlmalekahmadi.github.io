@@ -38,6 +38,31 @@ export default function Hero() {
     <section id="identity" ref={root} className="relative flex min-h-[100svh] items-center" aria-label="Introduction">
       <div ref={content} className="container-x relative z-10 grid w-full items-center pt-24 pb-20 md:grid-cols-12">
         <div className="md:col-span-8 lg:col-span-7 max-md:pt-[42vh]">
+          {site.phd.open && (
+            <motion.button
+              type="button"
+              onClick={() => scrollTo("#phd")}
+              data-cursor="PHD"
+              className="group mb-7 inline-flex items-center gap-3 rounded-full border border-cyan/35 bg-cyan/[0.07] py-1.5 pl-2 pr-4 backdrop-blur-md transition-colors hover:border-cyan/70 hover:bg-cyan/15"
+              initial={{ opacity: 0, y: -10 }}
+              animate={show ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.9, ease, delay: 0.05 }}
+            >
+              <span className="flex items-center gap-2 rounded-full bg-cyan px-2.5 py-1 font-mono text-[9.5px] font-semibold uppercase tracking-[0.18em] text-bg">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inset-0 animate-ping rounded-full bg-bg/60" />
+                  <span className="relative h-1.5 w-1.5 rounded-full bg-bg" />
+                </span>
+                Now
+              </span>
+              <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink/90">
+                {site.phd.badge}
+                {site.phd.start ? ` · ${site.phd.start}` : ""}
+              </span>
+              <ArrowRight size={13} className="text-cyan transition-transform duration-500 group-hover:translate-x-1" />
+            </motion.button>
+          )}
+
           <motion.div
             className="mb-7 flex items-center gap-3"
             initial={{ opacity: 0, x: -12 }}

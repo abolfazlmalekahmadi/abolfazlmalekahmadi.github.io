@@ -156,10 +156,12 @@ body {
   }
 }
 
-:focus-visible {
-  outline: 1.5px solid var(--color-cyan);
-  outline-offset: 3px;
-  border-radius: 4px;
+@layer base {
+  :focus-visible {
+    outline: 1.5px solid var(--color-cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar {

@@ -7,7 +7,7 @@ import { useExperience } from "@/lib/experience";
 import { createProvider } from "./providers";
 import type { ChatMessage } from "./types";
 
-const SUGGESTIONS = ["What is PanSAM?", "What are your research interests?", "Tell me about the Nature paper", "How can I get in touch?"];
+const SUGGESTIONS = ["Are you looking for a PhD?", "What is PanSAM?", "What are your research interests?", "Tell me about the Nature paper"];
 
 export default function Assistant() {
   const provider = useMemo(() => createProvider(), []);

@@ -46,7 +46,7 @@ export const timeline: Milestone[] = [
   {
     year: "2026",
     title: "Expanding Research Frontiers",
-    text: "A systematic review in the Journal of International Medical Research, and continuing work on trustworthy AI, foundation models and autonomous agents.",
+    text: "A systematic review in the Journal of International Medical Research; teaching Agentic AI and Docker at Rahnema College; and continuing work on trustworthy AI, foundation models and autonomous agents.",
     tags: ["Trustworthy AI", "Agents"],
     artifact: { label: "Focus", value: "Reliability" },
   },
