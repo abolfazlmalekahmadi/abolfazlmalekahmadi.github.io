@@ -1,9 +1,12 @@
 name: Deploy to GitHub Pages
 
+# Manual only for now: Actions is unavailable on this account (billing lock).
+# Deploy with `npm run deploy` instead. To go back to automatic deploys,
+# restore the push trigger below and set Pages → Source → GitHub Actions.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+  # push:
+  #   branches: [main]
 
 permissions:
   contents: read

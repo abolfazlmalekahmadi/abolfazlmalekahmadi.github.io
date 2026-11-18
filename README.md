@@ -29,15 +29,18 @@ All content lives in `src/data/` — components never hard-code it.
 
 ## Deploy to GitHub Pages
 
-1. Create a repo named **`<your-username>.github.io`** (site served at the root) — or any name (served at `/<repo>/`; the workflow sets the base path automatically).
-2. Push this folder as the repo root:
-   ```bash
-   git init && git add . && git commit -m "NEURAL portfolio"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/<your-username>.github.io.git
-   git push -u origin main
-   ```
-3. On GitHub: **Settings → Pages → Source: GitHub Actions**. The workflow in `.github/workflows/deploy.yml` builds and publishes on every push to `main`.
+Live at **https://abolfazlmalekahmadi.github.io**.
+
+GitHub Actions is currently unavailable on the account (billing lock), so the site is built locally and the static output is pushed to the `gh-pages` branch:
+
+```bash
+npm run deploy     # builds ./out and force-pushes it to gh-pages
+git push           # (separately) push your source changes to main
+```
+
+Pages setting: **Settings → Pages → Build and deployment → Deploy from a branch → `gh-pages` / `(root)`**.
+
+When Actions is available again, re-enable the `push` trigger in `.github/workflows/deploy.yml` and switch Pages → Source to **GitHub Actions**.
 
 ## Research assistant
 
