@@ -44,6 +44,7 @@ function Brain({ quality, reducedMotion }: { quality: Quality; reducedMotion: bo
   const brainMatrix = useMemo(() => new THREE.Matrix4(), []);
   const smooth = useRef({ px: 0, py: 0, x: 0, y: 0, s: 1 });
   const wave = useRef({ value: 9, next: 2.5, start: -1 });
+  const heroH = useRef({ h: 0, at: -1 });
 
   const shared = useMemo(
     () => ({
@@ -157,6 +158,19 @@ function Brain({ quality, reducedMotion }: { quality: Quality; reducedMotion: bo
     const sm = smooth.current;
     sm.x = lerp(sm.x, lerp(heroX, 0, center), k);
     sm.y = lerp(sm.y, lerp(heroY, 0, center) + s.introCenter * (mobile ? 0.55 : 0.32), k);
+
+    // Mobile: lift the brain with the page while the hero scrolls, so the copy
+    // never slides underneath it. Applied directly (no smoothing) to stay in sync.
+    let lift = 0;
+    if (mobile) {
+      if (t - heroH.current.at > 0.5) {
+        heroH.current.h = document.getElementById("identity")?.offsetHeight ?? 0;
+        heroH.current.at = t;
+      }
+      const px = Math.min(window.scrollY, heroH.current.h);
+      const worldPerPx = (2 * Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)) * cam.position.z) / Math.max(size.height, 1);
+      lift = px * worldPerPx * (1 - center);
+    }
     const targetScale = lerp(heroScale, mobile ? 0.85 : 1.05, s.introCenter) * (1 + s.heroShift * 0.45);
     sm.s = lerp(sm.s, targetScale, k);
 
@@ -165,7 +179,7 @@ function Brain({ quality, reducedMotion }: { quality: Quality; reducedMotion: bo
 
     if (group.current) {
       const spin = reducedMotion ? t * 0.03 : t * 0.11;
-      group.current.position.set(sm.x, sm.y, 0);
+      group.current.position.set(sm.x, sm.y + lift, 0);
       group.current.rotation.set(0.12 + sm.py * 0.18, Math.PI / 2 + spin + sm.px * 0.45, 0);
       group.current.scale.setScalar(sm.s);
       group.current.updateMatrixWorld();
@@ -205,7 +219,7 @@ function Brain({ quality, reducedMotion }: { quality: Quality; reducedMotion: bo
     shared.uWave.value = w.value;
 
     if (glow.current) {
-      glow.current.position.set(sm.x, sm.y, -0.8);
+      glow.current.position.set(sm.x, sm.y + lift, -0.8);
       glow.current.scale.setScalar(sm.s * 5.2);
       glowMat.uniforms.uOpacity.value = 0.55 * (1 - morph) * s.assemble * opacity;
     }

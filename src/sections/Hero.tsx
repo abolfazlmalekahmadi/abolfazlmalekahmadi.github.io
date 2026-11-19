@@ -28,10 +28,22 @@ export default function Hero() {
   // As scrolling starts: core moves to centre and expands; copy lifts away.
   useGSAP(
     () => {
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: 0.8 },
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 768px)", () => {
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: 0.8 },
+        });
+        tl.to(sceneState, { heroShift: 1, duration: 1, ease: "none" }, 0).to(content.current, { y: -90, opacity: 0, duration: 0.45, ease: "power1.in" }, 0);
       });
-      tl.to(sceneState, { heroShift: 1, ease: "none" }, 0).to(content.current, { y: -120, opacity: 0, ease: "none" }, 0);
+      // Mobile: the copy stays fully legible and scrolls away naturally; the brain
+      // (which scrolls up with the page, see NeuralScene) only returns to centre
+      // once the last of the hero has left the screen.
+      mm.add("(max-width: 767px)", () => {
+        gsap.timeline({
+          scrollTrigger: { trigger: root.current, start: "bottom 35%", end: "bottom top", scrub: 0.8 },
+        }).to(sceneState, { heroShift: 1, ease: "none" });
+      });
+      return () => mm.revert();
     },
     { scope: root },
   );
@@ -114,7 +126,7 @@ export default function Hero() {
                 onClick={() => scrollTo(`#${t.target}`)}
                 data-cursor={t.label.toUpperCase()}
                 variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.9, ease } } }}
-                className="group relative overflow-hidden rounded-2xl border border-line bg-bg-2/55 p-5 text-left backdrop-blur-md transition-colors duration-500 hover:border-cyan/50"
+                className="group relative overflow-hidden rounded-2xl border border-line bg-bg-2/55 p-5 text-left backdrop-blur-md max-md:bg-bg-2/90 transition-colors duration-500 hover:border-cyan/50"
               >
                 <span aria-hidden className="absolute inset-0 bg-[radial-gradient(120%_80%_at_0%_0%,rgb(85_223_255/0.14),transparent_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <span className="relative flex items-center justify-between">
@@ -187,7 +199,7 @@ export default function Hero() {
         {/* Credibility strip: the proof, visible on the first screen */}
         <motion.ul
           aria-label="Highlights"
-          className="mt-6 grid grid-cols-2 overflow-hidden rounded-2xl border border-line bg-bg/45 backdrop-blur-md lg:grid-cols-4"
+          className="mt-6 grid grid-cols-2 overflow-hidden rounded-2xl border border-line bg-bg/80 backdrop-blur-md max-md:bg-bg/90 lg:grid-cols-4"
           initial="hidden"
           animate={show ? "show" : "hidden"}
           variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 1.5 } } }}
