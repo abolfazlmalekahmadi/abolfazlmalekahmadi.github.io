@@ -82,6 +82,7 @@ export default function SegmentationVisual({ project }: { project: Project }) {
   const [stage, setStage] = useState(0);
   const [split, setSplit] = useState(42);
   const [auto, setAuto] = useState(true);
+  const [dragged, setDragged] = useState(false);
   const media = project.media;
 
   useEffect(() => {
@@ -185,23 +186,31 @@ export default function SegmentationVisual({ project }: { project: Project }) {
 
         {/* Divider */}
         <div className="pointer-events-none absolute inset-y-0 w-px bg-cyan shadow-[0_0_12px_#55dfff]" style={{ left: `${split}%` }}>
-          <div className="absolute top-1/2 left-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan bg-bg/80 font-mono text-[10px] text-cyan backdrop-blur">
+          <div className={`absolute top-1/2 left-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan bg-bg/80 font-mono text-[10px] text-cyan backdrop-blur ${dragged ? "" : "glow-pulse"}`}>
             ⟷
           </div>
         </div>
+        {!dragged && (
+          <div className="pointer-events-none absolute top-[calc(50%+28px)] -translate-x-1/2 whitespace-nowrap rounded-full border border-cyan/50 bg-bg/85 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-cyan backdrop-blur" style={{ left: `${split}%` }}>
+            ⟵ Drag to compare ⟶
+          </div>
+        )}
         <input
           type="range"
           min={0}
           max={100}
           value={split}
-          onChange={(e) => setSplit(Number(e.target.value))}
+          onChange={(e) => {
+            setSplit(Number(e.target.value));
+            setDragged(true);
+          }}
           aria-label="Compare input and output"
           className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"
           data-cursor="DRAG"
         />
 
-        <div className="pointer-events-none absolute left-3 top-3 rounded-full bg-bg/70 px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.18em] text-mute backdrop-blur">Input</div>
-        <div className="pointer-events-none absolute right-3 top-3 rounded-full bg-bg/70 px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.18em] text-cyan backdrop-blur">
+        <div className="pointer-events-none absolute left-3 top-3 rounded-full bg-bg/70 px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-mute backdrop-blur">Input</div>
+        <div className="pointer-events-none absolute right-3 top-3 rounded-full bg-bg/70 px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-cyan backdrop-blur">
           {media?.output ? "Output" : STAGES[stage].label}
         </div>
       </div>
@@ -217,7 +226,7 @@ export default function SegmentationVisual({ project }: { project: Project }) {
                 onClick={() => pick(i)}
                 className={`relative overflow-hidden rounded-lg border px-2 py-2.5 text-left transition-colors ${stage === i ? "border-cyan/50 bg-cyan/10" : "border-line hover:border-ink/30"}`}
               >
-                <div className="font-mono text-[9px] text-mute">0{i + 1}</div>
+                <div className="font-mono text-[10px] text-mute">0{i + 1}</div>
                 <div className={`mt-0.5 text-[11.5px] leading-tight ${stage === i ? "text-cyan" : "text-ink/80"}`}>{s.label}</div>
                 {stage === i && auto && inView && <motion.span className="absolute bottom-0 left-0 h-px bg-cyan" initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 2.8, ease: "linear" }} />}
               </button>

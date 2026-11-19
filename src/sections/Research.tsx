@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { ArrowUpRight, X } from "lucide-react";
+import { ArrowUpRight, MousePointerClick, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Reveal, SectionHeader } from "@/components/Reveal";
 import { researchDomains } from "@/data/research";
@@ -20,6 +20,13 @@ export default function Research() {
   const stage = useRef<HTMLDivElement>(null);
   const labelEls = useRef<(HTMLDivElement | null)[]>([]);
   const topicEls = useRef<(HTMLDivElement | null)[]>([]);
+  const ringEls = useRef<(HTMLDivElement | null)[]>([]);
+  /** Guide lights stay on until the visitor opens a domain once. */
+  const [explored, setExplored] = useState(false);
+  const select = (i: number | null) => {
+    setSelected(i);
+    if (i !== null) setExplored(true);
+  };
   const inView = useInView(stage, { margin: "10% 0px" });
   const { scrollTo } = useExperience();
 
@@ -27,6 +34,14 @@ export default function Research() {
     setGl(hasWebGL());
     setLowPower(detectLowPower());
   }, []);
+
+  // Keep the chosen tab visible in the scrollable tab bar (mobile).
+  useEffect(() => {
+    if (selected === null) return;
+    const tab = document.querySelectorAll<HTMLElement>("#research [role=tab]")[selected];
+    const bar = tab?.parentElement;
+    if (tab && bar) bar.scrollTo({ left: tab.offsetLeft - (bar.clientWidth - tab.offsetWidth) / 2, behavior: "smooth" });
+  }, [selected]);
 
   useEffect(() => {
     if (selected === null) return;
@@ -51,20 +66,39 @@ export default function Research() {
       </div>
 
       <div ref={stage} className="relative mt-12 h-[78svh] min-h-[560px] w-full overflow-hidden md:mt-16" data-cursor={hovered !== null ? "SELECT" : "EXPLORE"}>
-        {gl && <DomainNetwork domains={researchDomains} selected={selected} hovered={hovered} onSelect={setSelected} onHover={setHovered} active={inView} lowPower={lowPower} labelEls={labelEls} topicEls={topicEls} />}
+        {gl && <DomainNetwork domains={researchDomains} selected={selected} hovered={hovered} onSelect={select} onHover={setHovered} active={inView} lowPower={lowPower} labelEls={labelEls} topicEls={topicEls} ringEls={ringEls} />}
 
         {/* DOM labels, positioned from the 3D scene every frame */}
         {gl && (
-          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div aria-hidden className={`pointer-events-none absolute inset-0 overflow-hidden transition-opacity duration-500 ${selected !== null ? "max-md:opacity-0" : ""}`}>
+            {/* Guide beacons on each node until the first click */}
+            {researchDomains.map((d, i) => (
+              <div key={`ring-${d.id}`} ref={(el) => void (ringEls.current[i] = el)} className="absolute left-0 top-0 opacity-0 transition-opacity duration-300">
+                <div className={`relative h-0 w-0 transition-opacity duration-700 ${!explored && selected === null ? "opacity-100" : hovered === i && selected === null ? "opacity-60" : "opacity-0"}`}>
+                  <span className="beacon" style={{ animationDelay: `${i * 0.45}s` }} />
+                  <span className="beacon" style={{ animationDelay: `${i * 0.45 + 1.1}s` }} />
+                  {i === 0 && !explored && selected === null && (
+                    <div className="absolute left-12 top-0 flex -translate-y-1/2 items-center">
+                      <span className="h-px w-8 bg-gradient-to-r from-cyan/0 to-cyan" />
+                      <span className="nudge flex items-center gap-2 whitespace-nowrap rounded-full border border-cyan/60 bg-bg/85 px-3.5 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-ink shadow-[0_0_24px_rgb(85_223_255/0.35)] backdrop-blur">
+                        <MousePointerClick size={14} className="text-cyan" />
+                        <span className="md:hidden">Tap a node</span>
+                        <span className="hidden md:inline">Click a node to explore</span>
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
             {researchDomains.map((d, i) => (
               <div key={d.id} ref={(el) => void (labelEls.current[i] = el)} className="absolute left-0 top-0 whitespace-nowrap text-center opacity-0 transition-opacity duration-300">
                 <div className="font-mono text-[10px] tracking-[0.2em] text-cyan">{d.index}</div>
-                <div className={`font-display text-[15px] font-medium tracking-tight transition-colors ${selected === i || hovered === i ? "text-ink" : "text-ink/70"}`}>{d.title}</div>
+                <div className={`font-display text-[15px] font-medium tracking-tight transition-colors ${selected === i || hovered === i ? "text-ink" : "text-ink/85"}`}>{d.title}</div>
               </div>
             ))}
             {(domain?.topics ?? []).map((t, j) => (
-              <div key={t} ref={(el) => void (topicEls.current[j] = el)} className="absolute left-0 top-0 opacity-0 transition-opacity duration-500">
-                <span className="whitespace-nowrap rounded-full border border-cyan/30 bg-bg/80 px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.14em] text-cyan backdrop-blur">{t}</span>
+              <div key={t} ref={(el) => void (topicEls.current[j] = el)} className="absolute left-0 top-0 opacity-0 transition-opacity duration-500 max-md:hidden">
+                <span className="whitespace-nowrap rounded-full border border-cyan/30 bg-bg/80 px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.14em] text-cyan backdrop-blur">{t}</span>
               </div>
             ))}
           </div>
@@ -72,21 +106,21 @@ export default function Research() {
 
         {/* Accessible domain switcher (also the mobile control) */}
         <div className="absolute inset-x-0 bottom-5 z-10 flex justify-center px-4">
-          <div role="tablist" aria-label="Research domains" className="no-scrollbar flex max-w-full gap-1.5 overflow-x-auto rounded-full border border-line bg-bg/70 p-1.5 backdrop-blur-xl">
+          <div role="tablist" aria-label="Research domains" className={`no-scrollbar flex max-w-full gap-1.5 overflow-x-auto rounded-full border bg-bg/80 p-1.5 backdrop-blur-xl ${explored ? "border-line" : "glow-pulse border-cyan/40"}`}>
             {researchDomains.map((d, i) => (
               <button
                 key={d.id}
                 role="tab"
                 aria-selected={selected === i}
                 aria-controls="domain-panel"
-                onClick={() => setSelected(selected === i ? null : i)}
+                onClick={() => select(selected === i ? null : i)}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
-                className={`shrink-0 rounded-full px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.16em] transition-colors md:px-4 ${
-                  selected === i ? "bg-cyan text-bg" : "text-mute hover:text-ink"
+                className={`shrink-0 rounded-full px-3.5 py-2 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors md:px-4 ${
+                  selected === i ? "bg-cyan text-bg" : "text-ink/80 hover:bg-cyan/10 hover:text-ink"
                 }`}
               >
-                <span className="mr-1.5 opacity-60">{d.index}</span>
+                <span className="mr-1.5 text-cyan/90">{d.index}</span>
                 {d.title}
               </button>
             ))}
@@ -117,7 +151,7 @@ export default function Research() {
               </div>
               <p className="mt-4 text-[14.5px] leading-relaxed text-mute">{domain.summary}</p>
 
-              <div className="label mt-7 !text-[10px]">Research interests</div>
+              <div className="label mt-7 !text-[11px]">Research interests</div>
               <ul className="mt-3 grid grid-cols-2 gap-2">
                 {domain.topics.map((t, i) => (
                   <motion.li
@@ -132,7 +166,7 @@ export default function Research() {
                 ))}
               </ul>
 
-              <div className="label mt-7 !text-[10px]">In my work</div>
+              <div className="label mt-7 !text-[11px]">In my work</div>
               <ul className="mt-3 space-y-2.5">
                 {domain.evidence.map((e, i) => (
                   <motion.li key={e} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 + i * 0.07 }} className="flex gap-3 text-[13.5px] leading-snug text-ink/85">
@@ -153,7 +187,7 @@ export default function Research() {
         {gl === false && (
           <div className="container-x grid h-full content-center gap-4 sm:grid-cols-2">
             {researchDomains.map((d, i) => (
-              <button key={d.id} type="button" onClick={() => setSelected(i)} className="panel rounded-2xl p-6 text-left">
+              <button key={d.id} type="button" onClick={() => select(i)} className="panel rounded-2xl p-6 text-left">
                 <div className="font-mono text-[11px] text-cyan">{d.index}</div>
                 <div className="mt-1 font-display text-2xl text-ink">{d.title}</div>
               </button>
@@ -162,8 +196,12 @@ export default function Research() {
         )}
 
         {selected === null && (
-          <div className="pointer-events-none absolute left-[var(--gutter)] top-6 hidden font-mono text-[10px] uppercase tracking-[0.2em] text-mute md:block">
-            <span className="text-cyan">●</span> Interactive · click a node
+          <div className="pointer-events-none absolute left-[var(--gutter)] top-20 z-10 flex items-center md:top-24 gap-2.5 rounded-full border border-cyan/30 bg-bg/70 px-3.5 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-ink/90 backdrop-blur">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inset-0 animate-ping rounded-full bg-cyan/70" />
+              <span className="relative h-2 w-2 rounded-full bg-cyan" />
+            </span>
+            Interactive <span className="text-mute">·</span> <span className="text-cyan md:hidden">tap any node</span><span className="hidden text-cyan md:inline">click any node or a tab below</span>
           </div>
         )}
       </div>

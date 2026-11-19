@@ -88,7 +88,7 @@ export default function Assistant() {
                 </span>
                 <div>
                   <div className="font-display text-[15px] tracking-tight text-ink">Research assistant</div>
-                  <div className="font-mono text-[9.5px] uppercase tracking-[0.16em] text-mute">{provider.live ? "Live · grounded on portfolio data" : "Offline mode · no AI model"}</div>
+                  <div className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-mute">{provider.live ? "Live · grounded on portfolio data" : "Offline mode · no AI model"}</div>
                 </div>
               </div>
               <button type="button" onClick={() => setOpen(false)} aria-label="Close assistant" className="rounded-full p-1.5 text-mute hover:text-ink">
@@ -127,11 +127,11 @@ export default function Assistant() {
                       <div className="mt-3 flex flex-wrap gap-1.5">
                         {m.sources.map((s) =>
                           s.href.startsWith("#") ? (
-                            <button key={s.href + s.label} type="button" onClick={() => scrollTo(s.href)} className="inline-flex items-center gap-1 rounded-full border border-line px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.12em] text-cyan hover:border-cyan/50">
+                            <button key={s.href + s.label} type="button" onClick={() => scrollTo(s.href)} className="inline-flex items-center gap-1 rounded-full border border-line px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-cyan hover:border-cyan/50">
                               {s.label} ↓
                             </button>
                           ) : (
-                            <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-line px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.12em] text-cyan hover:border-cyan/50">
+                            <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-line px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-cyan hover:border-cyan/50">
                               {s.label} <ArrowUpRight size={10} />
                             </a>
                           ),
@@ -163,7 +163,7 @@ export default function Assistant() {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask a question…"
                 aria-label="Your question"
-                className="flex-1 rounded-full border border-line bg-bg/60 px-4 py-2.5 text-[13.5px] text-ink placeholder:text-mute/70 focus:border-cyan/50 focus:outline-none"
+                className="flex-1 rounded-full border border-line bg-bg/60 px-4 py-2.5 text-[13.5px] text-ink placeholder:text-mute focus:border-cyan/50 focus:outline-none"
               />
               <button type="submit" disabled={!input.trim() || busy} aria-label="Send" className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan text-bg transition-opacity disabled:opacity-40">
                 <Send size={14} />

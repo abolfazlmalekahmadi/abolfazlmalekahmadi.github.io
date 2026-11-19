@@ -75,7 +75,7 @@ export default function About() {
                       <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-cyan">{e.period}</div>
                       <div className="mt-1 font-display text-lg tracking-tight text-ink">{e.degree}</div>
                       <div className="text-[13.5px] text-mute">{e.org}</div>
-                      {e.detail && <div className="mt-1 text-[12.5px] text-mute/80">{e.detail}</div>}
+                      {e.detail && <div className="mt-1 text-[12.5px] text-mute">{e.detail}</div>}
                     </li>
                   ))}
                 </ul>

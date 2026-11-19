@@ -31,7 +31,7 @@ export function Rich({ text }: { text: string }) {
 function SystemFlow({ steps, active, label = "System built" }: { steps: string[]; active: boolean; label?: string }) {
   return (
     <div className="relative overflow-hidden rounded-xl border border-line bg-bg/50 p-4 md:p-5">
-      <div className="mb-3 flex items-center justify-between font-mono text-[9.5px] uppercase tracking-[0.18em] text-mute">
+      <div className="mb-3 flex items-center justify-between font-mono text-[10.5px] uppercase tracking-[0.18em] text-mute">
         <span>{label}</span>
         <span className={`flex items-center gap-1.5 ${active ? "text-cyan" : ""}`}>
           <span className={`h-1.5 w-1.5 rounded-full ${active ? "animate-pulse bg-cyan" : "bg-mute/40"}`} /> {active ? "live" : "idle"}
@@ -46,7 +46,7 @@ function SystemFlow({ steps, active, label = "System built" }: { steps: string[]
               animate={active ? { opacity: 1, y: 0, borderColor: "rgba(85,223,255,0.35)" } : { opacity: 0.55, y: 0 }}
               transition={{ duration: 0.6, ease, delay: active ? i * 0.12 : 0 }}
             >
-              <div className="font-mono text-[8.5px] text-cyan/70">{String(i + 1).padStart(2, "0")}</div>
+              <div className="font-mono text-[9.5px] text-cyan/80">{String(i + 1).padStart(2, "0")}</div>
               <div className="text-[12px] leading-tight text-ink/90">{s}</div>
             </motion.li>
             {i < steps.length - 1 && (
@@ -135,7 +135,7 @@ function RolePanel({ role, index, onActive }: { role: Role; index: number; onAct
 
         <div className="relative mt-6 flex flex-wrap gap-1.5">
           {role.stack.map((s) => (
-            <span key={s} className="rounded-full border border-line px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.12em] text-mute">
+            <span key={s} className="rounded-full border border-line px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-mute">
               {s}
             </span>
           ))}
@@ -151,7 +151,7 @@ function RoleRail({ active, list }: { active: number; list: React.RefObject<HTML
   const fill = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   return (
     <nav aria-label="Roles" className="relative">
-      <div className="label mb-5 !text-[10px]">Roles · {String(roles.length).padStart(2, "0")}</div>
+      <div className="label mb-5 !text-[11px]">Roles · {String(roles.length).padStart(2, "0")}</div>
       <div className="relative pl-5">
         <div className="absolute bottom-1 left-0 top-1 w-px bg-line">
           <motion.div className="absolute inset-0 origin-top bg-cyan shadow-[0_0_10px_#55dfff]" style={{ scaleY: fill }} />
@@ -167,7 +167,7 @@ function RoleRail({ active, list }: { active: number; list: React.RefObject<HTML
               >
                 <div className="flex items-baseline justify-between gap-3">
                   <span className={`font-display text-[17px] tracking-tight transition-colors duration-500 ${active === i ? "text-ink" : "text-ink/45 group-hover:text-ink/80"}`}>{r.org}</span>
-                  <span className={`shrink-0 font-mono text-[9px] tracking-[0.12em] transition-colors ${active === i ? "text-cyan" : "text-mute/60"}`}>{r.period.split(" — ")[0]}</span>
+                  <span className={`shrink-0 font-mono text-[10px] tracking-[0.12em] transition-colors ${active === i ? "text-cyan" : "text-mute"}`}>{r.period.split(" — ")[0]}</span>
                 </div>
                 <AnimatePresence initial={false}>
                   {active === i && (
@@ -283,7 +283,7 @@ function Toolkit() {
             <span className="text-mute">{hover} — part of the wider toolkit (see CV)</span>
           )
         ) : (
-          <span className="text-mute/70">
+          <span className="text-mute">
             <span className="mr-1.5 inline-block h-1 w-1 rounded-full bg-cyan align-middle" /> marks tools tied to a role · dots after a language show proficiency
           </span>
         )}

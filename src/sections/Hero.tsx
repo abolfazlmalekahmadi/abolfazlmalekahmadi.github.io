@@ -48,7 +48,7 @@ export default function Hero() {
               animate={show ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.9, ease, delay: 0.05 }}
             >
-              <span className="flex items-center gap-2 rounded-full bg-cyan px-2.5 py-1 font-mono text-[9.5px] font-semibold uppercase tracking-[0.18em] text-bg">
+              <span className="flex items-center gap-2 rounded-full bg-cyan px-2.5 py-1 font-mono text-[10.5px] font-semibold uppercase tracking-[0.18em] text-bg">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inset-0 animate-ping rounded-full bg-bg/60" />
                   <span className="relative h-1.5 w-1.5 rounded-full bg-bg" />
@@ -70,7 +70,7 @@ export default function Hero() {
             transition={{ duration: 1, ease, delay: 0.2 }}
           >
             <span className="h-px w-8 bg-cyan" />
-            <span className="label !text-[10px] md:!text-[11px]">{site.eyebrow}</span>
+            <span className="label !text-[11px] md:!text-[11px]">{site.eyebrow}</span>
           </motion.div>
 
           <MaskHeading
@@ -158,7 +158,7 @@ export default function Hero() {
         transition={{ delay: 2 }}
         aria-label="Scroll to continue"
       >
-        <span className="label !text-[10px]">Scroll to enter the mind</span>
+        <span className="label !text-[11px]">Scroll to enter the mind</span>
         <span className="flex h-10 w-6 justify-center rounded-full border border-line pt-2">
           <motion.span animate={{ y: [0, 10, 0], opacity: [1, 0.2, 1] }} transition={{ duration: 2, repeat: Infinity }}>
             <ArrowDown size={12} className="text-cyan" />
@@ -173,7 +173,7 @@ export default function Hero() {
         animate={show ? { opacity: 1 } : {}}
         transition={{ delay: 1.8, duration: 1.2 }}
       >
-        <div className="label mb-3 !text-[10px] text-cyan">Neural core · live</div>
+        <div className="label mb-3 !text-[11px] text-cyan">Neural core · live</div>
         <p className="font-mono text-[10.5px] leading-5 tracking-[0.12em] text-mute">MOVE YOUR CURSOR TO DISTURB THE NETWORK</p>
         <div className="ml-auto mt-4 h-px w-24 bg-gradient-to-l from-cyan to-transparent" />
       </motion.div>

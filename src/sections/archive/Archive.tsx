@@ -34,7 +34,7 @@ function CaseStudy({ project, flip }: { project: Project; flip: boolean }) {
           <Reveal className="flex flex-wrap items-center gap-3">
             <span className="font-mono text-[11px] tracking-[0.2em] text-cyan">PROJECT {project.index}</span>
             <span className="h-px w-8 bg-line" />
-            <span className="label !text-[10px]">{project.kicker}</span>
+            <span className="label !text-[11px]">{project.kicker}</span>
           </Reveal>
           <Reveal delay={0.05}>
             <h3 id={`p-${project.id}`} className="display mt-6 text-[clamp(2.6rem,5vw,4.6rem)] text-ink">
@@ -100,7 +100,7 @@ function CaseStudy({ project, flip }: { project: Project; flip: boolean }) {
         <Reveal delay={0.1} className={`lg:col-span-7 ${flip ? "lg:order-1" : ""}`}>
           <div className="lg:sticky lg:top-28">
             <Visual project={project} />
-            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-mute/70">{project.visualNote}</p>
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-mute">{project.visualNote}</p>
           </div>
         </Reveal>
       </div>

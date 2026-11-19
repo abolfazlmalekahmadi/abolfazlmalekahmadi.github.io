@@ -75,7 +75,7 @@ export default function Cursor() {
           }}
         >
           <span
-            className="font-mono text-[9px] tracking-[0.2em] text-cyan transition-opacity duration-300"
+            className="font-mono text-[10px] tracking-[0.2em] text-cyan transition-opacity duration-300"
             style={{ opacity: label ? 1 : 0 }}
           >
             {label}

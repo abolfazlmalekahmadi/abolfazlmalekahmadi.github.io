@@ -41,6 +41,8 @@ type Props = {
   labelEls: React.RefObject<(HTMLDivElement | null)[]>;
   /** DOM labels for the selected domain's topics. */
   topicEls: React.RefObject<(HTMLDivElement | null)[]>;
+  /** DOM "click me" beacons centred on each node. */
+  ringEls: React.RefObject<(HTMLDivElement | null)[]>;
   domains: ResearchDomain[];
   selected: number | null;
   hovered: number | null;
@@ -265,9 +267,12 @@ function place(el: HTMLElement | null | undefined, obj: THREE.Object3D | null | 
   el.style.transform = `translate3d(${((tmp.x + 1) / 2) * w}px, ${((1 - tmp.y) / 2) * h}px, 0) translate(-50%, -50%)`;
 }
 
-function Labels({ labelEls, topicEls, selected }: Pick<Props, "labelEls" | "topicEls" | "selected">) {
+function Labels({ labelEls, topicEls, ringEls, selected }: Pick<Props, "labelEls" | "topicEls" | "ringEls" | "selected">) {
   useFrame(({ camera, size }) => {
-    registry.nodes.forEach((n, i) => place(labelEls.current?.[i], n, camera, size.width, size.height, -0.72));
+    registry.nodes.forEach((n, i) => {
+      place(labelEls.current?.[i], n, camera, size.width, size.height, -0.72);
+      place(ringEls.current?.[i], n, camera, size.width, size.height, 0);
+    });
     const sats = selected !== null ? registry.sats[selected] ?? [] : [];
     for (let j = 0; j < 6; j++) place(topicEls.current?.[j], sats[j], camera, size.width, size.height, 0, selected !== null);
   });
@@ -321,7 +326,7 @@ export default function DomainNetwork(props: Props) {
       style={{ position: "absolute", inset: 0 }}
     >
       <CameraRig selected={props.selected} />
-      <Labels labelEls={props.labelEls} topicEls={props.topicEls} selected={props.selected} />
+      <Labels labelEls={props.labelEls} topicEls={props.topicEls} ringEls={props.ringEls} selected={props.selected} />
       <Connections selected={props.selected} hovered={props.hovered} lowPower={lowPower} />
       {domains.map((d, i) => (
         <DomainNode key={d.id} index={i} domain={d} selected={props.selected} hovered={props.hovered} onSelect={props.onSelect} onHover={props.onHover} />

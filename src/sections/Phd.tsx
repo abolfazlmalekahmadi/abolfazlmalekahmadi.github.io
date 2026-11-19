@@ -38,7 +38,7 @@ function Field({
         {required && <span className="text-cyan"> *</span>}
       </label>
       <span aria-hidden className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-cyan shadow-[0_0_10px_#55dfff] transition-transform duration-500 ease-out-expo group-focus-within:scale-x-100" />
-      {hint && <p className="mt-1.5 text-[11px] text-mute/70">{hint}</p>}
+      {hint && <p className="mt-1.5 text-[11px] text-mute">{hint}</p>}
     </div>
   );
 }
@@ -182,7 +182,7 @@ function InquiryForm() {
                     <ArrowRight size={14} className="relative transition-transform duration-500 group-hover:translate-x-1" />
                   )}
                 </button>
-                <span className="text-[11.5px] text-mute/70">Your email is only used to reply to you.</span>
+                <span className="text-[11.5px] text-mute">Your email is only used to reply to you.</span>
               </div>
             </motion.form>
           )}
@@ -228,7 +228,7 @@ export default function Phd() {
               <div className="flex flex-wrap gap-2">
                 {researchDomains.map((d) => (
                   <span key={d.id} className="flex items-center gap-2 rounded-full border border-line bg-bg-2/50 px-3.5 py-1.5 text-[13px] text-ink/85">
-                    <span className="font-mono text-[9.5px] text-cyan">{d.index}</span>
+                    <span className="font-mono text-[10.5px] text-cyan">{d.index}</span>
                     {d.title}
                   </span>
                 ))}

@@ -135,14 +135,14 @@ export default function AgentsVisual({ project }: { project: Project }) {
           })}
         </svg>
 
-        <div className="absolute left-3 top-3 rounded-full bg-bg/70 px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.18em] text-mute backdrop-blur">Illustrative simulation</div>
+        <div className="absolute left-3 top-3 rounded-full bg-bg/70 px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-mute backdrop-blur">Illustrative simulation</div>
         <div className="absolute right-3 top-3">
           <button
             type="button"
             onClick={run}
             disabled={running}
             data-cursor="RUN"
-            className="flex items-center gap-2 rounded-full border border-cyan/50 bg-cyan/10 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-cyan backdrop-blur transition-colors hover:bg-cyan/20 disabled:opacity-50"
+            className={`flex items-center gap-2 rounded-full border border-cyan/50 bg-cyan/10 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-cyan backdrop-blur transition-colors hover:bg-cyan/20 disabled:opacity-50 ${step < 0 && !running ? "glow-pulse" : ""}`}
           >
             {done ? <RotateCcw size={12} /> : <Play size={12} />}
             {running ? "Running…" : done ? "Run again" : "Run simulation"}
@@ -152,14 +152,14 @@ export default function AgentsVisual({ project }: { project: Project }) {
 
       <div className="mt-4 rounded-xl border border-line bg-bg/50">
         <div className="flex items-center justify-between border-b border-line px-4 py-2">
-          <span className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-mute">Agent log</span>
+          <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-mute">Agent log</span>
           <span className={`h-1.5 w-1.5 rounded-full ${running ? "animate-pulse bg-cyan" : "bg-mute/40"}`} />
         </div>
         <ol ref={logRef} aria-live="polite" className="no-scrollbar h-[112px] overflow-y-auto px-4 py-3 font-mono text-[11px] leading-5">
-          {logs.length === 0 && <li className="text-mute/70">Press “Run simulation” to watch a representative workflow.</li>}
+          {logs.length === 0 && <li className="text-mute">Press “Run simulation” to watch a representative workflow.</li>}
           {logs.map((l, i) => (
             <motion.li key={i} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} className="flex gap-3">
-              <span className="shrink-0 text-mute/60">{l.t}s</span>
+              <span className="shrink-0 text-mute">{l.t}s</span>
               <span className="shrink-0 text-cyan">{NODES[l.agent].label.toLowerCase()}</span>
               <span className="text-ink/80">{l.text}</span>
             </motion.li>

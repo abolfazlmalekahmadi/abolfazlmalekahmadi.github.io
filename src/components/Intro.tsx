@@ -110,7 +110,7 @@ export default function Intro() {
               className="rounded-full border border-line px-4 py-2 font-mono text-[10px] uppercase tracking-[0.22em] text-mute transition-colors hover:border-cyan/50 hover:text-cyan"
               data-cursor="SKIP"
             >
-              Skip intro <span className="ml-1 hidden text-mute/60 md:inline">[esc]</span>
+              Skip intro <span className="ml-1 hidden text-mute md:inline">[esc]</span>
             </button>
           </div>
 
@@ -178,7 +178,7 @@ export default function Intro() {
           </div>
 
           <motion.p
-            className="absolute bottom-6 font-mono text-[10px] tracking-[0.22em] text-mute/70"
+            className="absolute bottom-6 font-mono text-[10px] tracking-[0.22em] text-mute"
             initial={{ opacity: 0 }}
             animate={{ opacity: stage >= 3 ? 1 : 0 }}
           >

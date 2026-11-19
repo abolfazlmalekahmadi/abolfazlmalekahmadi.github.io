@@ -31,12 +31,13 @@ export const researchDomains: ResearchDomain[] = [
     title: "Foundation Models",
     short: "FND",
     summary:
-      "Adapting large pre-trained vision models — SAM, DINOv2 — to domains they were never trained on, without manual supervision at inference time.",
+      "Adapting large pre-trained models — SAM and DINOv2 for vision, open LLMs for language — to domains they were never trained on, without manual supervision at inference time.",
     topics: ["Vision Foundation Models", "Self-Supervised Learning", "Model Adaptation", "Generalization"],
     evidence: [
       "SAM adapted for zero-shot, prompt-free segmentation",
       "DINOv2 / DeepLabv3+ features for stenosis classification",
       "Zero-shot generalization to out-of-domain Abdominal-1K",
+      "Distributed fine-tuning of open LLMs — Llama, Mistral and Qwen",
     ],
   },
   {
@@ -45,12 +46,13 @@ export const researchDomains: ResearchDomain[] = [
     title: "Autonomous AI Agents",
     short: "AGT",
     summary:
-      "LLM systems that plan, retrieve, reason and act — and the serving infrastructure that makes them fast enough to use.",
-    topics: ["Large Language Models", "Multi-Agent Systems", "Agentic Workflows", "Reasoning"],
+      "LLM agents that plan, retrieve, use tools and reason over several steps — built to work in production, and taught to the engineers who will build the next ones.",
+    topics: ["Multi-Agent Systems", "Tool Use & Function Calling", "Agentic Workflows", "Multi-Step Reasoning"],
     evidence: [
-      "Agentic HR hiring system — technical team lead (Fanap)",
-      "Multi-LLM serving platform: vLLM, PagedAttention, FP8/GPTQ/AWQ",
-      "Distributed fine-tuning of Llama, Mistral and Qwen families",
+      "Agentic HR hiring system — designed and led a multi-agent pipeline (Fanap)",
+      "LLM agents with structured tool use across retrieval, reasoning and generation",
+      "Production conversational AI: multi-turn dialogue, context and session management",
+      "Teaching Agentic AI at Rahnema College: agents, tool use, function calling",
     ],
   },
   {

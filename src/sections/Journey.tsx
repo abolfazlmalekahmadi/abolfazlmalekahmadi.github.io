@@ -44,13 +44,13 @@ function Item({ m, i }: { m: Milestone; i: number }) {
           <div className="mt-5 flex flex-wrap items-end justify-between gap-4 border-t border-line pt-4">
             <div className="flex flex-wrap gap-1.5">
               {m.tags.map((t) => (
-                <span key={t} className="rounded-full border border-line px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.12em] text-mute">
+                <span key={t} className="rounded-full border border-line px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-mute">
                   {t}
                 </span>
               ))}
             </div>
             <div className="text-right">
-              <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-mute">{m.artifact.label}</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-mute">{m.artifact.label}</div>
               <div className={`font-display text-xl tracking-tight transition-colors duration-700 ${active ? "text-cyan" : "text-ink/70"}`}>{m.artifact.value}</div>
             </div>
           </div>

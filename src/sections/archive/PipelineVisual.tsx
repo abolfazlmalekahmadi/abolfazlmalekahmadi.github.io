@@ -129,7 +129,7 @@ export default function PipelineVisual({ project }: { project: Project }) {
 
         {/* Classifier heads */}
         <div className="flex w-[118px] flex-col justify-center gap-3 border-l border-line bg-bg/40 px-3 py-4 md:w-[140px]">
-          <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-mute">Stenosis heads</div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-mute">Stenosis heads</div>
           {ARTERIES.map((a, i) => (
             <motion.div
               key={a}
@@ -141,12 +141,12 @@ export default function PipelineVisual({ project }: { project: Project }) {
               transition={{ delay: stage >= 3 ? i * 0.25 : 0 }}
             >
               <div className={`font-display text-lg leading-none ${stage >= 3 ? "text-cyan" : "text-ink/50"}`}>{a}</div>
-              <div className="mt-1 font-mono text-[8.5px] uppercase tracking-[0.12em] text-mute">{a === "LCX" ? "≤ 80% acc." : "classified"}</div>
+              <div className="mt-1 font-mono text-[9.5px] uppercase tracking-[0.1em] text-mute">{a === "LCX" ? "≤ 80% acc." : "classified"}</div>
             </motion.div>
           ))}
         </div>
 
-        <div className="pointer-events-none absolute left-3 top-3 rounded-full bg-bg/70 px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.18em] text-cyan backdrop-blur">
+        <div className="pointer-events-none absolute left-3 top-3 rounded-full bg-bg/70 px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-cyan backdrop-blur">
           {String(stage + 1).padStart(2, "0")} · {STAGES[stage].label}
         </div>
       </div>
@@ -163,7 +163,7 @@ export default function PipelineVisual({ project }: { project: Project }) {
             }}
             className={`relative overflow-hidden rounded-lg border px-2 py-2.5 text-left transition-colors ${stage === i ? "border-cyan/50 bg-cyan/10" : "border-line hover:border-ink/30"}`}
           >
-            <div className="font-mono text-[9px] text-mute">0{i + 1}</div>
+            <div className="font-mono text-[10px] text-mute">0{i + 1}</div>
             <div className={`mt-0.5 text-[11.5px] leading-tight ${stage === i ? "text-cyan" : "text-ink/80"}`}>{s.label}</div>
             {stage === i && auto && inView && <motion.span className="absolute bottom-0 left-0 h-px bg-cyan" initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 3, ease: "linear" }} />}
           </button>
