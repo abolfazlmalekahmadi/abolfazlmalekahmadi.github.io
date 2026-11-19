@@ -5,7 +5,8 @@ import { ArrowUpRight, Briefcase, GraduationCap, Rocket } from "lucide-react";
 import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import CountUp from "@/components/CountUp";
 import { MaskHeading, Reveal } from "@/components/Reveal";
-import { engineeringStats, roles, skillGroups, teaching, teachingStats, whereUsed, type Role } from "@/data/experience";
+import { engineeringStats, judgingPhoto, roles, skillGroups, teaching, teachingStats, whereUsed, type Role } from "@/data/experience";
+import { asset } from "@/lib/asset";
 import { useExperience } from "@/lib/experience";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -298,6 +299,32 @@ function Teaching() {
       <SubHeader index="06.2" title="TEACHING & LEADERSHIP.">
         <p className="text-[14.5px] leading-relaxed text-mute">From leading teams of teaching assistants to bootcamps and college courses on model serving and RAG.</p>
       </SubHeader>
+      <div className={`grid gap-10 ${judgingPhoto.src ? "lg:grid-cols-12" : ""}`}>
+        {judgingPhoto.src && (
+          <Reveal className="lg:col-span-4">
+            <figure className="group lg:sticky lg:top-28">
+              <div className="relative overflow-hidden rounded-2xl border border-line">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={asset(judgingPhoto.src)}
+                  alt={judgingPhoto.caption}
+                  loading="lazy"
+                  className="aspect-[3/4] w-full object-cover saturate-[0.85] transition duration-[1.2s] ease-out-expo group-hover:scale-[1.04] group-hover:saturate-100"
+                />
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-bg via-bg/10 to-transparent" />
+                <div aria-hidden className="absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_100%,rgb(21_155_206/0.25),transparent)]" />
+                <figcaption className="absolute inset-x-0 bottom-0 p-5">
+                  <div className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.18em] text-cyan">
+                    <span className="h-1.5 w-1.5 rounded-full bg-cyan" /> Service
+                  </div>
+                  <div className="mt-1.5 font-display text-xl tracking-tight text-ink">{judgingPhoto.caption}</div>
+                  {judgingPhoto.event && <div className="mt-0.5 text-[13px] text-mute">{judgingPhoto.event}</div>}
+                </figcaption>
+              </div>
+            </figure>
+          </Reveal>
+        )}
+        <div className={judgingPhoto.src ? "lg:col-span-8" : ""}>
       <StatGrid stats={teachingStats} />
       <ul className="mt-8 divide-y divide-line border-y border-line">
         {teaching.map((t, i) => (
@@ -309,6 +336,8 @@ function Teaching() {
           </Reveal>
         ))}
       </ul>
+        </div>
+      </div>
     </div>
   );
 }

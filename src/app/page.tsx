@@ -7,7 +7,7 @@ import Hero from "@/sections/Hero";
 import Journey from "@/sections/Journey";
 import Mind from "@/sections/Mind";
 import Publications from "@/sections/Publications";
-import Phd from "@/sections/Phd";
+import Phd, { PhdNudge } from "@/sections/Phd";
 import Research from "@/sections/Research";
 import Engineering from "@/sections/Engineering";
 
@@ -19,6 +19,7 @@ export default function Page() {
       <Research />
       <Archive />
       <Publications />
+      <PhdNudge />
       <Engineering />
       <Journey />
       <About />

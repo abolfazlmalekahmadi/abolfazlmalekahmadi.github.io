@@ -44,6 +44,7 @@ function DocPanel({ p, i }: { p: Publication; i: number }) {
 
   return (
     <motion.article
+      id={`pub-${p.id}`}
       ref={ref}
       onPointerMove={onMove}
       onPointerLeave={reset}
@@ -51,7 +52,7 @@ function DocPanel({ p, i }: { p: Publication; i: number }) {
       whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
       viewport={{ once: true, margin: "-10% 0px" }}
       transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: i * 0.08 }}
-      className="panel group relative overflow-hidden rounded-2xl p-6 transition-[transform,border-color] duration-300 ease-out hover:border-cyan/30 md:p-8"
+      className="panel group relative scroll-mt-28 overflow-hidden rounded-2xl p-6 transition-[transform,border-color] duration-300 ease-out hover:border-cyan/30 md:p-8"
       style={{ transformStyle: "preserve-3d" }}
     >
       <div

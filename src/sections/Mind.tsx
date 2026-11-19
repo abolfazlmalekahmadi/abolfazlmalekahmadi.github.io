@@ -58,7 +58,7 @@ export default function Mind() {
             scrollTrigger: {
               trigger: root.current,
               start: "top top",
-              end: () => `+=${window.innerHeight * (mobile ? 3.4 : 5)}`,
+              end: () => `+=${window.innerHeight * (mobile ? 2 : 2.6)}`,
               pin: stage.current,
               scrub: 1,
               anticipatePin: 1,

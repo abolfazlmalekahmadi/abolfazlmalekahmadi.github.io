@@ -7,6 +7,9 @@ import { MaskHeading, Reveal } from "@/components/Reveal";
 import { researchDomains } from "@/data/research";
 import { site } from "@/data/site";
 import { InquiryError, inquiryMailto, sendInquiry, type Inquiry } from "@/lib/inquiry";
+import { asset } from "@/lib/asset";
+import { useExperience } from "@/lib/experience";
+import { FileText } from "lucide-react";
 import { Rich } from "./Engineering";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -192,6 +195,74 @@ function InquiryForm() {
   );
 }
 
+function Avatar({ size = 64 }: { size?: number }) {
+  if (!site.avatar) return null;
+  return (
+    <span className="relative inline-flex shrink-0" style={{ width: size, height: size }}>
+      <span className="absolute -inset-1 rounded-full bg-[conic-gradient(from_0deg,#159bce,#55dfff,transparent_70%)] opacity-80 motion-safe:animate-[spin_6s_linear_infinite]" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={asset(site.avatar)} alt={`${site.name.first} ${site.name.last}`} width={size} height={size} className="relative h-full w-full rounded-full border-2 border-bg object-cover" />
+      <span className="absolute bottom-0.5 right-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full border-2 border-bg bg-cyan">
+        <span className="absolute inset-0 animate-ping rounded-full bg-cyan/70" />
+      </span>
+    </span>
+  );
+}
+
+/** Short reminder placed right after Publications — when the reader is most convinced. */
+export function PhdNudge() {
+  const { scrollTo } = useExperience();
+  if (!site.phd.open) return null;
+  return (
+    <section aria-label="Open to PhD positions" className="relative py-6 md:py-10">
+      <div className="container-x">
+        <Reveal>
+          <div className="relative overflow-hidden rounded-3xl p-px">
+            <div aria-hidden className="absolute inset-[-80%] animate-[spin_9s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_65%,rgb(21_155_206/0.7)_80%,#55dfff_88%,transparent_95%)] motion-reduce:animate-none" />
+            <div className="relative flex flex-col gap-6 rounded-[calc(1.5rem-1px)] bg-[linear-gradient(110deg,#0d1c2e,#0a1320_55%,#0b1726)] p-6 md:flex-row md:items-center md:gap-8 md:p-8">
+              <Avatar size={72} />
+              <div className="flex-1">
+                <div className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.2em] text-cyan">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan" />
+                  {site.phd.badge}
+                  {site.phd.start ? ` · ${site.phd.start}` : ""}
+                </div>
+                <h3 className="mt-2 font-display text-[clamp(1.4rem,2.4vw,2rem)] font-medium leading-tight tracking-tight text-ink">Interested in working together?</h3>
+                <p className="mt-2 max-w-2xl text-[14.5px] leading-relaxed text-mute">
+                  I&rsquo;m looking for a <strong className="font-semibold text-ink">PhD position</strong> and <strong className="font-semibold text-ink">research collaborations</strong> in medical AI, foundation models and agentic systems.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => scrollTo("#phd")}
+                  data-cursor="CONNECT"
+                  className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-ink px-6 py-3.5 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-bg"
+                >
+                  <span className="absolute inset-0 -translate-x-[101%] bg-cyan transition-transform duration-500 ease-out-expo group-hover:translate-x-0" />
+                  <span className="relative">Get in touch</span>
+                  <ArrowRight size={14} className="relative transition-transform group-hover:translate-x-1" />
+                </button>
+                {site.cv && (
+                  <a
+                    href={asset(site.cv)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-cursor="CV"
+                    className="inline-flex items-center gap-2 rounded-full border border-ink/25 px-5 py-3.5 font-mono text-[11px] uppercase tracking-[0.18em] text-ink transition-colors hover:border-cyan hover:text-cyan"
+                  >
+                    <FileText size={14} /> CV
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 /** PhD search: announcement + inquiry form. */
 export default function Phd() {
   if (!site.phd.open) return null;
@@ -219,6 +290,15 @@ export default function Phd() {
 
         <div className="mt-14 grid gap-12 md:mt-20 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
+            <Reveal className="mb-8 flex items-center gap-4">
+              <Avatar size={60} />
+              <div>
+                <div className="font-display text-lg tracking-tight text-ink">
+                  {site.name.first} {site.name.last}
+                </div>
+                <div className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-mute">{site.role}</div>
+              </div>
+            </Reveal>
             <Reveal>
               <p className="font-display text-[clamp(1.3rem,2.1vw,1.75rem)] font-light leading-snug tracking-tight text-ink">{phd.pitch}</p>
             </Reveal>

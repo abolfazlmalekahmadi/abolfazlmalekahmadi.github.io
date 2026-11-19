@@ -207,6 +207,16 @@ export const teaching: { role: string; course: string; period: string; org: stri
   { role: "Workshop Mentor", course: "AI in Medicine", period: "2023", org: "Sharif" },
 ];
 
+/**
+ * Photo shown with Teaching & Leadership. Set `event` to the event name to
+ * show it in the caption (left null until confirmed).
+ */
+export const judgingPhoto = {
+  src: "/media/judging.jpg" as string | null,
+  caption: "On the judging panel",
+  event: null as string | null,
+};
+
 export type SkillLevel = "Proficient" | "Intermediate" | "Familiar";
 export type SkillGroup = { group: string; items: { name: string; level?: SkillLevel }[] };
 

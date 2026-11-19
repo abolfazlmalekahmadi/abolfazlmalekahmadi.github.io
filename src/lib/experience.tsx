@@ -82,7 +82,22 @@ export function ExperienceProvider({ children }: { children: ReactNode }) {
       const el = typeof target === "string" ? document.querySelector<HTMLElement>(target) : null;
       if (typeof target === "string" && !el) return;
       if (lenisRef.current) {
-        lenisRef.current.scrollTo(el ?? (target as number), { duration: 1.6 });
+        const lenis = lenisRef.current;
+        // Resolve an absolute target from the live layout (respecting scroll-margin-top);
+        // Lenis' own element resolution can drift on touch devices.
+        const resolve = () => {
+          if (!el) return target as number;
+          const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+          return el.getBoundingClientRect().top + window.scrollY - margin;
+        };
+        lenis.scrollTo(resolve(), {
+          duration: 1.6,
+          force: true,
+          onComplete: () => {
+            const y = resolve();
+            if (Math.abs(window.scrollY - y) > 4) lenis.scrollTo(y, { duration: 0.6, force: true });
+          },
+        });
       } else {
         if (el) el.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" });
         else window.scrollTo({ top: target as number, behavior: reducedMotion ? "auto" : "smooth" });

@@ -65,7 +65,7 @@ export default function Research() {
         </div>
       </div>
 
-      <div ref={stage} className="relative mt-12 h-[78svh] min-h-[560px] w-full overflow-hidden md:mt-16" data-cursor={hovered !== null ? "SELECT" : "EXPLORE"}>
+      <div id="research-network" ref={stage} className="relative mt-12 h-[78svh] scroll-mt-20 min-h-[560px] w-full overflow-hidden md:mt-16" data-cursor={hovered !== null ? "SELECT" : "EXPLORE"}>
         {gl && <DomainNetwork domains={researchDomains} selected={selected} hovered={hovered} onSelect={select} onHover={setHovered} active={inView} lowPower={lowPower} labelEls={labelEls} topicEls={topicEls} ringEls={ringEls} />}
 
         {/* DOM labels, positioned from the 3D scene every frame */}
@@ -204,6 +204,39 @@ export default function Research() {
             Interactive <span className="text-mute">·</span> <span className="text-cyan md:hidden">tap any node</span><span className="hidden text-cyan md:inline">click any node or a tab below</span>
           </div>
         )}
+      </div>
+
+      {/* At-a-glance summary: everything readable without clicking */}
+      <div className="container-x mt-6">
+        <ul className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+          {researchDomains.map((d, i) => (
+            <li key={d.id} className="bg-bg-2/85">
+              <button
+                type="button"
+                onClick={() => {
+                  select(i);
+                  scrollTo("#research-network");
+                }}
+                data-cursor="OPEN"
+                className={`group flex h-full w-full flex-col p-5 text-left transition-colors duration-500 hover:bg-card md:p-6 ${selected === i ? "bg-card" : ""}`}
+              >
+                <span className="flex items-center justify-between">
+                  <span className="font-mono text-[11px] tracking-[0.2em] text-cyan">{d.index}</span>
+                  <ArrowUpRight size={15} className="text-mute transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-cyan" />
+                </span>
+                <span className="mt-3 font-display text-xl tracking-tight text-ink">{d.title}</span>
+                <span className="mt-2 text-[13px] leading-relaxed text-mute">{d.summary}</span>
+                <span className="mt-4 flex flex-wrap gap-1.5">
+                  {d.topics.map((t) => (
+                    <span key={t} className="rounded-full border border-line px-2.5 py-1 text-[11.5px] text-ink/80">
+                      {t}
+                    </span>
+                  ))}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

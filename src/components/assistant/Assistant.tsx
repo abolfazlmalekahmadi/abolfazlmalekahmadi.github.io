@@ -16,6 +16,14 @@ export default function Assistant() {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  // Stay out of the way on the first screen (it would cover the credibility strip).
+  const [pastHero, setPastHero] = useState(false);
+  useEffect(() => {
+    const on = () => setPastHero(window.scrollY > window.innerHeight * 0.5);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
   const list = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -58,8 +66,9 @@ export default function Assistant() {
         data-cursor="ASK"
         className="fixed bottom-4 right-4 z-50 flex items-center gap-2.5 rounded-full border border-cyan/40 bg-bg/80 py-2.5 pl-3 pr-4 font-mono text-[10px] uppercase tracking-[0.18em] text-ink shadow-[0_0_30px_rgb(21_155_206/0.25)] backdrop-blur-xl transition-colors hover:border-cyan md:bottom-6 md:right-6"
         initial={{ opacity: 0, y: 20 }}
-        animate={introDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ delay: 1.6, duration: 0.8 }}
+        animate={introDone && (pastHero || open) ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.6 }}
+        style={{ pointerEvents: introDone && (pastHero || open) ? "auto" : "none" }}
       >
         <span className="relative flex h-6 w-6 items-center justify-center rounded-full bg-cyan/15 text-cyan">
           {open ? <X size={13} /> : <Sparkles size={13} />}

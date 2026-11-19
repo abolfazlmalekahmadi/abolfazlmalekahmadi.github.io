@@ -15,7 +15,7 @@ export const site = {
   tagline: "Beyond Intelligence.",
   role: "AI Researcher & Engineer",
   eyebrow: "AI RESEARCHER & ENGINEER · SHARIF UNIVERSITY OF TECHNOLOGY",
-  headline: "Exploring the Frontiers of AI.",
+  headline: "Building AI that works on real patients — and in real production.",
   intro:
     "I research intelligent systems at the intersection of medical imaging, foundation models, and autonomous AI agents — and engineer the LLM systems that run them in production.",
 
@@ -53,7 +53,40 @@ export const site = {
    * Portrait: put a file in /public/media (e.g. portrait.jpg) and set
    * `portrait: "/media/portrait.jpg"`. While null, a neutral monogram is shown.
    */
-  portrait: null as string | null,
+  portrait: "/media/portrait.jpg" as string | null,
+  /** Small round photo used in the PhD reminder and form. */
+  avatar: "/media/avatar.jpg" as string | null,
+
+  /**
+   * Credibility strip right under the hero. Links starting with "#" scroll
+   * within the page; others open the source in a new tab.
+   */
+  credentials: [
+    {
+      value: "ICML 2024",
+      label: "First author",
+      detail: "PanSAM · Foundation Model Workshop",
+      href: "https://openreview.net/pdf/49af6eaca244f5ebde170ba49432f8ea782b359e.pdf",
+    },
+    {
+      value: "Sci. Reports",
+      label: "Nature Portfolio · 2025",
+      detail: "AI team lead · 906 patients",
+      href: "https://www.nature.com/articles/s41598-025-28417-4",
+    },
+    {
+      value: "Patent",
+      label: "Registered",
+      detail: "AI-driven acute stroke diagnosis",
+      href: "#pub-stroke-patent",
+    },
+    {
+      value: "87.01%",
+      label: "Dice · NIH Pancreas",
+      detail: "Zero-shot, prompt-free SAM",
+      href: "https://openreview.net/pdf/49af6eaca244f5ebde170ba49432f8ea782b359e.pdf",
+    },
+  ],
 
   /** Path to the CV inside /public. Set to null to hide every "CV" button. */
   cv: "/Abolfazl_Malekahmadi_CV.pdf" as string | null,

@@ -4,7 +4,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight, FileText } from "lucide-react";
+import { ArrowRight, ArrowUpRight, FileText, Mail } from "lucide-react";
+import Magnetic from "@/components/Magnetic";
+import { GitHubIcon, LinkedInIcon, ScholarIcon } from "@/components/icons";
 import { useRef } from "react";
 import { MaskHeading, WordReveal } from "@/components/Reveal";
 import { site } from "@/data/site";
@@ -35,15 +37,16 @@ export default function Hero() {
   );
 
   return (
-    <section id="identity" ref={root} className="relative flex min-h-[100svh] items-center" aria-label="Introduction">
-      <div ref={content} className="container-x relative z-10 grid w-full items-center pt-24 pb-20 md:grid-cols-12">
+    <section id="identity" ref={root} className="relative" aria-label="Introduction">
+      <div ref={content} className="container-x relative z-10 flex min-h-[100svh] w-full flex-col pt-[5.25rem] pb-4">
+        <div className="grid flex-1 items-center md:grid-cols-12">
         <div className="md:col-span-8 lg:col-span-7 max-md:pt-[42vh]">
           {site.phd.open && (
             <motion.button
               type="button"
               onClick={() => scrollTo("#phd")}
               data-cursor="PHD"
-              className="group mb-7 inline-flex items-center gap-3 rounded-full border border-cyan/35 bg-cyan/[0.07] py-1.5 pl-2 pr-4 backdrop-blur-md transition-colors hover:border-cyan/70 hover:bg-cyan/15"
+              className="group mb-5 inline-flex items-center gap-3 rounded-full border border-cyan/35 bg-cyan/[0.07] py-1.5 pl-2 pr-4 backdrop-blur-md transition-colors hover:border-cyan/70 hover:bg-cyan/15"
               initial={{ opacity: 0, y: -10 }}
               animate={show ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.9, ease, delay: 0.05 }}
@@ -64,7 +67,7 @@ export default function Hero() {
           )}
 
           <motion.div
-            className="mb-7 flex items-center gap-3"
+            className="mb-4 flex items-center gap-3 [@media(max-height:800px)_and_(min-width:768px)]:hidden"
             initial={{ opacity: 0, x: -12 }}
             animate={show ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 1, ease, delay: 0.2 }}
@@ -76,7 +79,7 @@ export default function Hero() {
           <MaskHeading
             as="h1"
             show={show}
-            className="display text-[clamp(2.6rem,6.9vw,7.4rem)] text-ink"
+            className="display text-[clamp(2.6rem,6.1vw,6.6rem)] text-ink"
             lines={[
               site.name.first.toUpperCase(),
               <>
@@ -87,7 +90,7 @@ export default function Hero() {
           />
 
           <motion.p
-            className="mt-7 font-display text-[clamp(1.15rem,2vw,1.6rem)] font-light tracking-tight text-ink/90"
+            className="mt-5 font-display text-[clamp(1.15rem,1.9vw,1.55rem)] font-light tracking-tight text-ink/90"
             initial={{ opacity: 0, y: 14 }}
             animate={show ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 1, ease, delay: 0.55 }}
@@ -95,11 +98,11 @@ export default function Hero() {
             {site.headline}
           </motion.p>
 
-          <WordReveal show={show} delay={0.7} text={site.intro} className="mt-4 max-w-xl text-[15px] leading-relaxed text-mute md:text-base" />
+          <WordReveal show={show} delay={0.7} text={site.intro} className="mt-3 max-w-2xl text-[15px] leading-relaxed text-mute" />
 
           {/* Two tracks: the page splits from here */}
           <motion.div
-            className="mt-9 grid max-w-2xl gap-3 sm:grid-cols-2"
+            className="mt-6 grid max-w-2xl gap-3 sm:grid-cols-2"
             initial="hidden"
             animate={show ? "show" : "hidden"}
             variants={{ hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 1.05 } } }}
@@ -121,7 +124,7 @@ export default function Hero() {
                   <ArrowRight size={15} className="text-mute transition-all duration-500 group-hover:translate-x-1 group-hover:text-cyan" />
                 </span>
                 <span className="relative mt-3 block font-display text-[17px] leading-snug tracking-tight text-ink">{t.title}</span>
-                <span className="relative mt-3 flex flex-col gap-1">
+                <span className="relative mt-3 flex flex-col gap-1 [@media(max-height:860px)_and_(min-width:768px)]:hidden">
                   {t.points.map((p) => (
                     <span key={p} className="flex items-center gap-2 text-[12.5px] text-mute transition-colors group-hover:text-ink/75">
                       <span className="h-px w-2.5 bg-cyan/60" />
@@ -133,42 +136,100 @@ export default function Hero() {
             ))}
           </motion.div>
 
-          {site.cv && (
-            <motion.div className="mt-6" initial={{ opacity: 0 }} animate={show ? { opacity: 1 } : {}} transition={{ duration: 1, delay: 1.5 }}>
-              <a
-                href={asset(site.cv)}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-cursor="OPEN"
-                className="inline-flex items-center gap-2 border-b border-line pb-1 font-mono text-[10.5px] uppercase tracking-[0.2em] text-ink/80 transition-colors hover:border-cyan hover:text-cyan"
-              >
-                <FileText size={13} /> View full CV
-              </a>
-            </motion.div>
-          )}
+          {/* Primary actions: CV + profiles */}
+          <motion.div
+            className="mt-5 flex flex-wrap items-center gap-3"
+            initial={{ opacity: 0, y: 12 }}
+            animate={show ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1, ease, delay: 1.35 }}
+          >
+            {site.cv && (
+              <Magnetic>
+                <a
+                  href={asset(site.cv)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="CV"
+                  className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-ink px-6 py-3.5 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-bg shadow-[0_0_30px_rgb(85_223_255/0.25)]"
+                >
+                  <span className="absolute inset-0 -translate-x-[101%] bg-cyan transition-transform duration-500 ease-out-expo group-hover:translate-x-0" />
+                  <FileText size={15} className="relative" />
+                  <span className="relative">View CV</span>
+                  <span className="relative rounded-full bg-bg/10 px-2 py-0.5 text-[9.5px] tracking-[0.12em]">PDF</span>
+                </a>
+              </Magnetic>
+            )}
+            {[
+              site.social.scholar && { label: "Google Scholar", href: site.social.scholar, icon: <ScholarIcon size={17} /> },
+              site.social.github && { label: "GitHub", href: site.social.github, icon: <GitHubIcon size={17} /> },
+              site.social.linkedin && { label: "LinkedIn", href: site.social.linkedin, icon: <LinkedInIcon size={16} /> },
+              site.contact.email && { label: "Email", href: `mailto:${site.contact.email}`, icon: <Mail size={16} /> },
+            ]
+              .filter((x): x is { label: string; href: string; icon: React.ReactElement } => !!x)
+              .map((l) => (
+                <Magnetic key={l.label}>
+                  <a
+                    href={l.href}
+                    {...(l.href.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+                    aria-label={l.label}
+                    title={l.label}
+                    data-cursor={l.label.split(" ").pop()?.toUpperCase()}
+                    className="flex h-12 w-12 items-center justify-center rounded-full border border-line bg-bg-2/60 text-ink/85 backdrop-blur-md transition-all duration-300 hover:border-cyan/60 hover:bg-cyan/10 hover:text-cyan hover:shadow-[0_0_18px_rgb(85_223_255/0.3)]"
+                  >
+                    {l.icon}
+                  </a>
+                </Magnetic>
+              ))}
+          </motion.div>
         </div>
-      </div>
+        </div>
 
-      <motion.button
-        type="button"
-        onClick={() => scrollTo("#mind")}
-        className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-3 md:flex"
-        initial={{ opacity: 0 }}
-        animate={show ? { opacity: 1 } : {}}
-        transition={{ delay: 2 }}
-        aria-label="Scroll to continue"
-      >
-        <span className="label !text-[11px]">Scroll to enter the mind</span>
-        <span className="flex h-10 w-6 justify-center rounded-full border border-line pt-2">
-          <motion.span animate={{ y: [0, 10, 0], opacity: [1, 0.2, 1] }} transition={{ duration: 2, repeat: Infinity }}>
-            <ArrowDown size={12} className="text-cyan" />
-          </motion.span>
-        </span>
-      </motion.button>
+        {/* Credibility strip: the proof, visible on the first screen */}
+        <motion.ul
+          aria-label="Highlights"
+          className="mt-6 grid grid-cols-2 overflow-hidden rounded-2xl border border-line bg-bg/45 backdrop-blur-md lg:grid-cols-4"
+          initial="hidden"
+          animate={show ? "show" : "hidden"}
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 1.5 } } }}
+        >
+          {site.credentials.map((c, i) => {
+            const internal = c.href.startsWith("#");
+            return (
+              <motion.li
+                key={c.value + c.label}
+                variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease } } }}
+                className={`border-line ${i % 2 === 1 ? "border-l" : ""} ${i >= 2 ? "border-t lg:border-t-0" : ""} ${i === 2 ? "lg:border-l" : ""}`}
+              >
+                <a
+                  href={c.href}
+                  onClick={(e) => {
+                    if (!internal) return;
+                    e.preventDefault();
+                    scrollTo(c.href);
+                  }}
+                  {...(internal ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+                  data-cursor={internal ? "VIEW" : "SOURCE"}
+                  className="group relative flex h-full flex-col justify-between gap-2 p-4 transition-colors duration-500 hover:bg-cyan/[0.07] md:px-5 md:py-4"
+                >
+                  <span aria-hidden className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-cyan shadow-[0_0_10px_#55dfff] transition-transform duration-700 ease-out-expo group-hover:scale-x-100" />
+                  <span className="flex items-start justify-between gap-2">
+                    <span className="font-display text-[clamp(1.25rem,2.1vw,1.9rem)] font-medium leading-none tracking-tight text-ink">{c.value}</span>
+                    <ArrowUpRight size={15} className="mt-0.5 shrink-0 text-mute transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-cyan" />
+                  </span>
+                  <span>
+                    <span className="block font-mono text-[10.5px] uppercase tracking-[0.16em] text-cyan">{c.label}</span>
+                    <span className="mt-0.5 block text-[12.5px] leading-snug text-mute">{c.detail}</span>
+                  </span>
+                </a>
+              </motion.li>
+            );
+          })}
+        </motion.ul>
+      </div>
 
       {/* Side caption, desktop only */}
       <motion.div
-        className="absolute right-[6vw] bottom-[18vh] z-10 hidden max-w-[220px] text-right xl:block"
+        className="absolute right-[6vw] top-[16vh] z-10 hidden max-w-[220px] text-right xl:block"
         initial={{ opacity: 0 }}
         animate={show ? { opacity: 1 } : {}}
         transition={{ delay: 1.8, duration: 1.2 }}
