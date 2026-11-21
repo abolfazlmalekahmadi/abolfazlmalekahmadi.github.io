@@ -53,11 +53,9 @@ export const projects: Project[] = [
     description:
       "A prompt-free approach to adapting the Segment Anything Model for pancreas segmentation, using model-derived probability maps to eliminate manual prompts.",
     highlights: [
-      "First prompt-free SAM-based pancreas segmentation framework",
-      "Attention-guided prompt generator — prompts derived from probability maps are inherently interpretable",
-      "3D aggregator module across CT slices",
+      "First prompt-free SAM-based pancreas segmentation",
+      "Prompts come from the model's own probability maps — interpretable by design",
       "Zero-shot generalization to out-of-domain Abdominal-1K",
-      "Downstream tools for lesion detection, classification and resectability assessment",
     ],
     metrics: [
       { label: "Dice", value: 87.01, decimals: 2, suffix: "%", note: "NIH pancreas dataset" },
@@ -81,12 +79,11 @@ export const projects: Project[] = [
     venue: "Scientific Reports · Nature Portfolio · 2025",
     role: "Co-author · AI Team Lead",
     description:
-      "A non-invasive route to coronary artery disease screening: segment the tongue, extract foundation-model features, and classify stenosis per artery — then open the model up to see what it is looking at.",
+      "Non-invasive coronary artery disease screening from a tongue photo: segment, extract foundation-model features, classify stenosis per artery.",
     highlights: [
-      "SAM for tongue segmentation; DeepLabv3+ / DINOv2 for feature extraction",
-      "Stenosis classification across LAD, RCA and LCX",
-      "Feature importance: tongue colour and fissures are the dominant predictors",
-      "Occlusion-sensitivity analysis (systematic patch masking) for interpretability and robustness",
+      "SAM segmentation + DeepLabv3+ / DINOv2 features, per-artery stenosis heads",
+      "Tongue colour and fissures are the dominant predictors",
+      "Occlusion sensitivity shows what the model is looking at",
     ],
     metrics: [
       { label: "Patients", value: 906, note: "clinical validation cohort" },
@@ -108,13 +105,11 @@ export const projects: Project[] = [
     venue: "Fanap · Technical Team Lead",
     role: "Designer & technical lead",
     description:
-      "Multiple LLM-based agents with structured tool use across retrieval, reasoning and generation: match candidates to roles semantically, score and rank them, write role-specific interview questions, and evaluate the answers.",
+      "LLM agents with structured tool use that match candidates to roles, rank them, write interview questions and evaluate the answers.",
     highlights: [
-      "Semantic matching of candidate profiles against job descriptions",
-      "Suitability scoring and ranking",
-      "AI-generated technical and HR interview questions per role",
-      "Automated evaluation of candidates' interview answers",
-      "Served on a self-hosted multi-LLM platform (vLLM, continuous batching, quantization)",
+      "Semantic matching, suitability scoring and ranking",
+      "AI-generated interview questions and automated answer evaluation",
+      "Served on a self-hosted multi-LLM platform",
     ],
     metrics: [],
     stack: ["LLM agents", "Tool use", "RAG", "vLLM", "LiteLLM", "MCP"],

@@ -58,13 +58,9 @@ export default function About() {
           </Reveal>
 
           <div className="space-y-16 lg:col-span-8">
-            <div className="space-y-5">
-              {site.bio.map((p, i) => (
-                <Reveal key={i} delay={i * 0.06}>
-                  <p className={i === 0 ? "font-display text-[clamp(1.35rem,2.2vw,1.85rem)] leading-snug tracking-tight text-ink" : "text-[15.5px] leading-relaxed text-mute"}>{p}</p>
-                </Reveal>
-              ))}
-            </div>
+            <Reveal>
+              <p className="font-display text-[clamp(1.35rem,2.2vw,1.85rem)] leading-snug tracking-tight text-ink">{site.about}</p>
+            </Reveal>
 
             <div className="grid gap-12 md:grid-cols-2">
               <Reveal>

@@ -15,7 +15,7 @@ function Item({ m, i }: { m: Milestone; i: number }) {
   const left = i % 2 === 0;
 
   return (
-    <li ref={ref} className="relative grid grid-cols-[28px_1fr] gap-5 py-10 md:grid-cols-[1fr_56px_1fr] md:gap-0 md:py-16">
+    <li ref={ref} className="relative grid grid-cols-[28px_1fr] gap-5 py-6 md:grid-cols-[1fr_56px_1fr] md:gap-0 md:py-9">
       {/* Year (parallax layer) */}
       <motion.div style={{ y: yearY }} className={`hidden md:flex md:items-center ${left ? "md:order-1 md:justify-end md:pr-12" : "md:order-3 md:pl-12"}`}>
         <span className={`font-display text-[clamp(4rem,8vw,7.5rem)] font-semibold leading-none tracking-tighter transition-colors duration-700 ${active ? "text-ink" : "text-ink/10"}`}>{m.year}</span>

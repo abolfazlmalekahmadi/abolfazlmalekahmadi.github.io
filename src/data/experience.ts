@@ -18,7 +18,12 @@ export type Role = {
   flow: string[];
   /** Label above the flow diagram (default "System built"). */
   flowLabel?: string;
+  /** 2–3 one-line highlights, always visible. **bold** supported. */
+  summary: string[];
+  /** Full detail, shown behind "Show details". */
   points: RolePoint[];
+  /** true → listed under "Earlier roles" as a single line (uses summary[0]). */
+  compact?: boolean;
   stack: string[];
 };
 
@@ -32,6 +37,11 @@ export const roles: Role[] = [
     kind: "Industry",
     headline: "Production LLM systems — from the GPU cluster up to the agents.",
     flow: ["GPU cluster", "LLM serving", "Multi-agent pipeline", "Hiring decisions"],
+    summary: [
+      "Led a **multi-agent hiring pipeline**: matching, scoring, interview questions, answer evaluation",
+      "Built **multi-LLM serving**: continuous batching, PagedAttention, **FP8 / GPTQ / AWQ**",
+      "Production **chatbot** end to end · **GPU cluster** work with NTG and Huawei",
+    ],
     points: [
       {
         lead: "Agentic HR Hiring System — Technical Team Lead",
@@ -62,6 +72,11 @@ export const roles: Role[] = [
     headline: "Teaching engineers to build AI agents — and ship them in containers.",
     flow: ["LLM agents", "Tool use & function calling", "Multi-step reasoning", "Docker & Compose", "Deployed agent projects"],
     flowLabel: "Curriculum",
+    summary: [
+      "Teaching **Agentic AI**: agents, tool use, function calling, multi-step reasoning",
+      "Hands-on **Docker & Compose**; students ship **containerized agent projects**",
+      "Instructor of the **Machine Learning Bootcamp**: serving, Docker, RAG",
+    ],
     points: [
       {
         lead: "Agentic AI",
@@ -91,6 +106,11 @@ export const roles: Role[] = [
     kind: "Industry",
     headline: "Data platforms and MLOps that turn raw data into fine-tuned, served models.",
     flow: ["Raw sources", "Spark ETL", "Airflow", "LakeFS", "Axolotl fine-tuning", "K8s inference"],
+    summary: [
+      "Led a **scalable data platform**: Spark, Airflow, **LakeFS** versioning",
+      "**Distributed fine-tuning** of Llama, Mistral and Qwen with Axolotl",
+      "**Auto-scaling inference on Kubernetes** with MIG partitioning",
+    ],
     points: [
       { lead: "Pipeline architecture", text: "Designed and led a **scalable data-pipeline architecture** for large-scale dataset processing." },
       { lead: "ETL & versioning", text: "Built ETL workflows with **Apache Spark**, **Apache Airflow** and **LakeFS** for **version-controlled data management**." },
@@ -111,6 +131,10 @@ export const roles: Role[] = [
     kind: "Industry",
     headline: "Forecasting, speech and sentiment — models in front of real customers.",
     flow: ["Customer calls", "ASR", "Sentiment analysis", "Monitoring dashboards"],
+    summary: [
+      "Electricity-consumption **forecasting**, customer-service **sentiment analysis** and call-transcription **ASR**",
+    ],
+    compact: true,
     points: [
       { lead: "Forecasting", text: "Built **predictive models for electricity-consumption forecasting** and interactive **monitoring dashboards**." },
       { lead: "Sentiment", text: "Designed a **sentiment-analysis pipeline** for customer-service interactions." },
@@ -127,6 +151,10 @@ export const roles: Role[] = [
     kind: "Industry",
     headline: "Real-time visibility into a live system.",
     flow: ["Live events", "Kibana", "Fault detection"],
+    summary: [
+      "**Real-time dashboards** and automated **fault detection** with Kibana",
+    ],
+    compact: true,
     points: [{ text: "Built **real-time dashboards** and **automated monitoring systems for fault detection** using **Kibana**." }],
     stack: ["Kibana", "Real-time monitoring"],
   },
@@ -139,6 +167,10 @@ export const roles: Role[] = [
     kind: "Industry",
     headline: "Software for the genetics lab.",
     flow: ["PCR", "Analysis", "Diagnostics"],
+    summary: [
+      "Improved the **PCR technique** for genetic analysis and diagnostics",
+    ],
+    compact: true,
     points: [{ text: "Enhanced the **PCR technique**, improving **efficiency and accuracy** for genetic analysis and diagnostics." }],
     stack: ["PCR", "Genetic diagnostics"],
   },
@@ -151,6 +183,10 @@ export const roles: Role[] = [
     kind: "Venture",
     headline: "A diagnostic system for the minutes that matter in stroke.",
     flow: ["Brain imaging", "Lesion detection", "Localisation", "Volume quantification", "Treatment recommendation"],
+    summary: [
+      "Co-founded a **stroke diagnostic system**: lesion detection, localisation, volume, treatment recommendation",
+      "Backed by a **registered patent**",
+    ],
     points: [
       {
         text: "Building a medical diagnostic system that integrates ML for **brain-lesion detection, localisation, volume quantification and treatment recommendation** — backed by a **registered patent**.",
@@ -167,6 +203,10 @@ export const roles: Role[] = [
     kind: "Venture",
     headline: "First startup: genetic-risk screening for couples.",
     flow: ["Health records", "ML risk model", "Early detection"],
+    summary: [
+      "ML on **health records** to assess **recessive-disease risk** in prospective couples",
+    ],
+    compact: true,
     points: [
       {
         text: "Co-founded an **AI-driven platform** that assesses **genetic-disorder risk** in prospective couples, integrating ML with **electronic health records** for early detection of recessive diseases (**cystic fibrosis, sickle-cell anaemia**).",
@@ -191,17 +231,18 @@ export const teachingStats = [
   { value: 12, suffix: "", label: "TAs led", note: "Deep Learning, Head TA" },
 ];
 
-export const teaching: { role: string; course: string; period: string; org: string }[] = [
-  { role: "ML Instructor", course: "Agentic AI & Docker — agents, tool use, function calling, Compose", period: "Oct 2026 — Present", org: "Rahnema College" },
+/** `key: true` rows are shown by default; the rest sit behind "Show all". */
+export const teaching: { role: string; course: string; period: string; org: string; key?: boolean }[] = [
+  { role: "ML Instructor", course: "Agentic AI & Docker — agents, tool use, function calling, Compose", period: "Oct 2026 — Present", org: "Rahnema College" , key: true },
   { role: "Bootcamp Instructor", course: "Machine Learning Bootcamp — model serving, Docker & RAG", period: "", org: "Rahnema College" },
   { role: "Bootcamp Mentor & Instructor", course: "ML, AI Fundamentals, AI in Industry, Python", period: "2024 — 2025", org: "Sharif Innovation Center" },
-  { role: "Head TA", course: "Generative AI — Dr. Seyyedsalehi", period: "Spring 2025", org: "Sharif" },
+  { role: "Head TA", course: "Generative AI — Dr. Seyyedsalehi", period: "Spring 2025", org: "Sharif" , key: true },
   { role: "TA", course: "Machine Learning — Dr. Sharifi", period: "Spring 2025", org: "Sharif" },
   { role: "TA", course: "Natural Language Processing — Dr. Asgari", period: "Spring 2024", org: "Sharif" },
-  { role: "Head TA", course: "Deep Learning — Prof. Beigy · led 12 TAs", period: "Fall 2023", org: "Sharif" },
+  { role: "Head TA", course: "Deep Learning — Prof. Beigy · led 12 TAs", period: "Fall 2023", org: "Sharif" , key: true },
   { role: "TA", course: "Modern Information Retrieval — Prof. Beigy", period: "2023", org: "Sharif" },
   { role: "TA", course: "Artificial Intelligence — Dr. Rohban", period: "2023", org: "Sharif" },
-  { role: "Senior TA", course: "Algorithmic Creativity & Python — 4,500+ students", period: "2023", org: "Sharif" },
+  { role: "Senior TA", course: "Algorithmic Creativity & Python — 4,500+ students", period: "2023", org: "Sharif" , key: true },
   { role: "Instructor & Question Designer", course: "AI Committee, Young Scholars Club", period: "2024", org: "YSC" },
   { role: "Bootcamp Mentor", course: "Data Science Principles & Techniques, Micromaster", period: "Jan — Jun 2024", org: "Sharif" },
   { role: "Workshop Mentor", course: "AI in Medicine", period: "2023", org: "Sharif" },

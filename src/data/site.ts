@@ -42,7 +42,11 @@ export const site = {
   philosophy:
     "I believe the future of AI lies not only in building more capable models, but in making them reliable, interpretable, and useful in the real world.",
 
-  /** Long-form bio (from the CV summary). */
+  /** The one line shown big in About (the rest of the bio is in the hero/strip already). */
+  about:
+    "I am drawn to problems where rigorous methodology meets real-world constraints — where a model has to work on actual patients, under actual hardware limits.",
+
+  /** Long-form bio (from the CV summary) — used by the assistant. */
   bio: [
     "AI researcher and engineer with an M.Sc. in Bioinformatics from Sharif University of Technology, working at the intersection of medical image analysis, foundation models, and large-scale LLM systems.",
     "I am drawn to problems where rigorous methodology meets real-world constraints — where a model has to work on actual patients, under actual hardware limits.",

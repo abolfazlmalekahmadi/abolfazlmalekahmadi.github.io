@@ -1,13 +1,17 @@
 "use client";
 
 import { AnimatePresence, motion, useInView, useScroll, useSpring } from "framer-motion";
-import { ArrowUpRight, Briefcase, GraduationCap, Rocket } from "lucide-react";
+import { ArrowUpRight, Briefcase, ChevronDown, GraduationCap, Rocket } from "lucide-react";
 import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import CountUp from "@/components/CountUp";
 import { MaskHeading, Reveal } from "@/components/Reveal";
 import { engineeringStats, judgingPhoto, roles, skillGroups, teaching, teachingStats, whereUsed, type Role } from "@/data/experience";
 import { asset } from "@/lib/asset";
 import { useExperience } from "@/lib/experience";
+
+/** Full panels for the main roles; the rest go under "Earlier roles". */
+const featured = roles.filter((r) => !r.compact);
+const earlier = roles.filter((r) => r.compact);
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -68,6 +72,21 @@ function SystemFlow({ steps, active, label = "System built" }: { steps: string[]
   );
 }
 
+function MoreButton({ open, onClick, more, less, controls }: { open: boolean; onClick: () => void; more: string; less: string; controls: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-expanded={open}
+      aria-controls={controls}
+      className="group inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink/85 transition-colors hover:border-cyan/50 hover:text-cyan"
+    >
+      {open ? less : more}
+      <ChevronDown size={13} className={`transition-transform duration-500 ${open ? "rotate-180" : ""}`} />
+    </button>
+  );
+}
+
 function RolePanel({ role, index, onActive }: { role: Role; index: number; onActive: (i: number) => void }) {
   const ref = useRef<HTMLElement>(null);
   const active = useInView(ref, { margin: "-42% 0px -42% 0px" });
@@ -77,6 +96,7 @@ function RolePanel({ role, index, onActive }: { role: Role; index: number; onAct
   }, [active, index, onActive]);
 
   const Icon = role.kind === "Venture" ? Rocket : role.kind === "Teaching" ? GraduationCap : Briefcase;
+  const [open, setOpen] = useState(false);
 
   return (
     <article id={`role-${role.id}`} ref={ref} className="scroll-mt-28" aria-labelledby={`role-h-${role.id}`}>
@@ -112,34 +132,56 @@ function RolePanel({ role, index, onActive }: { role: Role; index: number; onAct
           <SystemFlow steps={role.flow} active={active} label={role.flowLabel} />
         </div>
 
-        <ul className={`relative mt-7 grid gap-3 ${role.points.length > 1 ? "md:grid-cols-2" : ""}`}>
-          {role.points.map((p, i) => (
+        {/* At a glance */}
+        <ul className="relative mt-7 space-y-2.5">
+          {role.summary.map((line, i) => (
             <motion.li
               key={i}
-              initial={{ opacity: 0, y: 16 }}
-              animate={seen ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, ease, delay: 0.25 + i * 0.08 }}
-              className="group rounded-xl border border-line bg-bg/40 p-4 transition-colors hover:border-cyan/30 hover:bg-bg/60 md:p-5"
+              initial={{ opacity: 0, x: -10 }}
+              animate={seen ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, ease, delay: 0.2 + i * 0.07 }}
+              className="flex gap-3 text-[15px] leading-snug text-mute"
             >
-              {p.lead && (
-                <div className="mb-2 flex items-start gap-2 font-display text-[15px] font-medium leading-snug tracking-tight text-ink">
-                  <span className="mt-[9px] h-px w-3 shrink-0 bg-cyan transition-all duration-500 group-hover:w-5" />
-                  {p.lead}
-                </div>
-              )}
-              <p className="text-[13.5px] leading-relaxed text-mute">
-                <Rich text={p.text} />
-              </p>
+              <span className="mt-[10px] h-px w-3 shrink-0 bg-cyan" />
+              <span>
+                <Rich text={line} />
+              </span>
             </motion.li>
           ))}
         </ul>
 
-        <div className="relative mt-6 flex flex-wrap gap-1.5">
-          {role.stack.map((s) => (
-            <span key={s} className="rounded-full border border-line px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-mute">
-              {s}
-            </span>
-          ))}
+        {/* Full detail on demand */}
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.ul
+              id={`role-more-${role.id}`}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.6, ease }}
+              className={`relative grid gap-3 overflow-hidden ${role.points.length > 1 ? "md:grid-cols-2" : ""}`}
+            >
+              {role.points.map((p, i) => (
+                <li key={i} className={`rounded-xl border border-line bg-bg/40 p-4 md:p-5 ${i === 0 ? "mt-6 md:mt-6" : i === 1 ? "md:mt-6" : ""}`}>
+                  {p.lead && <div className="mb-1.5 font-display text-[15px] font-medium leading-snug tracking-tight text-ink">{p.lead}</div>}
+                  <p className="text-[13.5px] leading-relaxed text-mute">
+                    <Rich text={p.text} />
+                  </p>
+                </li>
+              ))}
+            </motion.ul>
+          )}
+        </AnimatePresence>
+
+        <div className="relative mt-6 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap gap-1.5">
+            {role.stack.map((s) => (
+              <span key={s} className="rounded-full border border-line px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-mute">
+                {s}
+              </span>
+            ))}
+          </div>
+          <MoreButton open={open} onClick={() => setOpen((o) => !o)} more="Show details" less="Show less" controls={`role-more-${role.id}`} />
         </div>
       </motion.div>
     </article>
@@ -158,7 +200,7 @@ function RoleRail({ active, list }: { active: number; list: React.RefObject<HTML
           <motion.div className="absolute inset-0 origin-top bg-cyan shadow-[0_0_10px_#55dfff]" style={{ scaleY: fill }} />
         </div>
         <ol className="space-y-1">
-          {roles.map((r, i) => (
+          {featured.map((r, i) => (
             <li key={r.id}>
               <button
                 type="button"
@@ -181,6 +223,15 @@ function RoleRail({ active, list }: { active: number; list: React.RefObject<HTML
             </li>
           ))}
         </ol>
+        {earlier.length > 0 && (
+          <button
+            type="button"
+            onClick={() => scrollTo("#earlier-roles")}
+            className="mt-3 block px-3 font-mono text-[10.5px] uppercase tracking-[0.16em] text-mute transition-colors hover:text-cyan"
+          >
+            + {earlier.length} earlier roles
+          </button>
+        )}
       </div>
     </nav>
   );
@@ -294,6 +345,8 @@ function Toolkit() {
 }
 
 function Teaching() {
+  const [all, setAll] = useState(false);
+  const rows = all ? teaching : teaching.filter((t) => t.key);
   return (
     <div>
       <SubHeader index="06.2" title="TEACHING & LEADERSHIP.">
@@ -326,8 +379,8 @@ function Teaching() {
         )}
         <div className={judgingPhoto.src ? "lg:col-span-8" : ""}>
       <StatGrid stats={teachingStats} />
-      <ul className="mt-8 divide-y divide-line border-y border-line">
-        {teaching.map((t, i) => (
+      <ul id="teaching-list" className="mt-8 divide-y divide-line border-y border-line">
+        {rows.map((t, i) => (
           <Reveal as="li" key={t.course} delay={Math.min(i, 6) * 0.03} className="group grid grid-cols-12 items-baseline gap-3 py-4 transition-colors hover:bg-bg-2/40 md:px-3">
             <span className="col-span-12 font-mono text-[10px] uppercase tracking-[0.14em] text-mute md:col-span-2">{t.period || "\u00a0"}</span>
             <span className={`col-span-12 font-display text-[16px] tracking-tight md:col-span-3 ${/Head|Senior|Instructor/.test(t.role) ? "text-cyan" : "text-ink/80"}`}>{t.role}</span>
@@ -336,6 +389,11 @@ function Teaching() {
           </Reveal>
         ))}
       </ul>
+      {teaching.length > rows.length || all ? (
+        <div className="mt-5">
+          <MoreButton open={all} onClick={() => setAll((a) => !a)} more={`Show all ${teaching.length} roles`} less="Show fewer" controls="teaching-list" />
+        </div>
+      ) : null}
         </div>
       </div>
     </div>
@@ -373,7 +431,7 @@ export default function Engineering() {
         </div>
 
         {/* Roles: sticky rail + scrolling panels */}
-        <div className="mt-20 grid gap-10 md:mt-28 lg:grid-cols-12 lg:gap-14">
+        <div className="mt-16 grid gap-10 md:mt-20 lg:grid-cols-12 lg:gap-14">
           <div className="hidden lg:col-span-4 lg:block">
             <div className="sticky top-28">
               <SubHeaderSmall />
@@ -383,18 +441,39 @@ export default function Engineering() {
           <div className="lg:hidden">
             <SubHeaderSmall />
           </div>
-          <div ref={list} className="space-y-8 lg:col-span-8 lg:space-y-14">
-            {roles.map((r, i) => (
+          <div ref={list} className="space-y-8 lg:col-span-8 lg:space-y-10">
+            {featured.map((r, i) => (
               <RolePanel key={r.id} role={r} index={i} onActive={setActive} />
             ))}
+
+            {earlier.length > 0 && (
+              <div id="earlier-roles" className="scroll-mt-28">
+                <div className="label mb-4">Earlier roles</div>
+                <ul className="divide-y divide-line border-y border-line">
+                  {earlier.map((r, i) => (
+                    <Reveal as="li" key={r.id} delay={i * 0.05} className="grid gap-1 py-4 md:grid-cols-12 md:gap-4 md:px-2">
+                      <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-mute md:col-span-3 md:pt-1">{r.period}</span>
+                      <span className="md:col-span-9">
+                        <span className="font-display text-[17px] tracking-tight text-ink">
+                          {r.title} <span className="text-mute">· {r.org}</span>
+                        </span>
+                        <span className="mt-1 block text-[14px] leading-snug text-mute">
+                          <Rich text={r.summary[0]} />
+                        </span>
+                      </span>
+                    </Reveal>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="mt-32 md:mt-44">
+        <div className="mt-24 md:mt-32">
           <Teaching />
         </div>
 
-        <div className="mt-32 md:mt-44">
+        <div className="mt-24 md:mt-32">
           <Toolkit />
         </div>
       </div>
