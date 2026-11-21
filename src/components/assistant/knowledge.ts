@@ -67,7 +67,7 @@ export function buildKnowledge(): Fact[] {
 
   facts.push({
     id: "experience",
-    keywords: ["experience", "work", "job", "industry", "fanap", "company", "employment", "career"],
+    keywords: ["experience", "work", "job", "industry", "abrpardis", "company", "employment", "career"],
     text: roles.map((r) => `${r.title} at ${r.org} (${r.period}) — ${r.headline}`).join(" "),
     sources: [sec("experience", "Experience")],
   });

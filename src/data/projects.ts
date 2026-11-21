@@ -102,7 +102,7 @@ export const projects: Project[] = [
     title: "Agentic Hiring",
     fullTitle: "An End-to-End Multi-Agent Pipeline for Automated Recruitment",
     year: 2025,
-    venue: "Fanap · Technical Team Lead",
+    venue: "Abrpardis · Technical Team Lead",
     role: "Designer & technical lead",
     description:
       "LLM agents with structured tool use that match candidates to roles, rank them, write interview questions and evaluate the answers.",

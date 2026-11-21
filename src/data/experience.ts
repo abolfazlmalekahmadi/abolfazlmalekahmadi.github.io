@@ -29,8 +29,8 @@ export type Role = {
 
 export const roles: Role[] = [
   {
-    id: "fanap",
-    org: "Fanap",
+    id: "abrpardis",
+    org: "Abrpardis",
     title: "AI Expert",
     place: "Tehran, Iran",
     period: "Feb 2025 — Present",
@@ -218,7 +218,7 @@ export const roles: Role[] = [
 
 /** Big numbers for the engineering track — every one is countable from the CV. */
 export const engineeringStats = [
-  { value: 6, suffix: "", label: "Organisations", note: "Fanap · Rahnema · Sharif · MCINEXT · Tapsell · Zistagen" },
+  { value: 6, suffix: "", label: "Organisations", note: "Abrpardis · Rahnema · Sharif · MCINEXT · Tapsell · Zistagen" },
   { value: 2, suffix: "", label: "Startups co-founded", note: "Beast Stroke · Genetic screening" },
   { value: 3, suffix: "", label: "LLM families fine-tuned", note: "Llama · Mistral · Qwen" },
   { value: 1, suffix: "", label: "Registered patent", note: "Acute ischemic stroke" },

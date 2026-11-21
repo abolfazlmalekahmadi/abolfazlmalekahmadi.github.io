@@ -49,7 +49,7 @@ export const researchDomains: ResearchDomain[] = [
       "LLM agents that plan, retrieve, use tools and reason over several steps — built to work in production, and taught to the engineers who will build the next ones.",
     topics: ["Multi-Agent Systems", "Tool Use & Function Calling", "Agentic Workflows", "Multi-Step Reasoning"],
     evidence: [
-      "Agentic HR hiring system — designed and led a multi-agent pipeline (Fanap)",
+      "Agentic HR hiring system — designed and led a multi-agent pipeline (Abrpardis)",
       "LLM agents with structured tool use across retrieval, reasoning and generation",
       "Production conversational AI: multi-turn dialogue, context and session management",
       "Teaching Agentic AI at Rahnema College: agents, tool use, function calling",

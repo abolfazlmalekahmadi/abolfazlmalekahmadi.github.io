@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { ArrowUpRight, MousePointerClick, X } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, MousePointerClick, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Reveal, SectionHeader } from "@/components/Reveal";
 import { researchDomains } from "@/data/research";
@@ -25,7 +25,11 @@ export default function Research() {
   const [explored, setExplored] = useState(false);
   const select = (i: number | null) => {
     setSelected(i);
-    if (i !== null) setExplored(true);
+    if (i === null) return;
+    setExplored(true);
+    // Make sure the whole stage (and so the panel header) is clear of the fixed nav.
+    const r = stage.current?.getBoundingClientRect();
+    if (r && (r.top < 72 || r.top > window.innerHeight * 0.35)) scrollTo("#research-network");
   };
   const inView = useInView(stage, { margin: "10% 0px" });
   const { scrollTo } = useExperience();
@@ -65,7 +69,7 @@ export default function Research() {
         </div>
       </div>
 
-      <div id="research-network" ref={stage} className="relative mt-12 h-[78svh] scroll-mt-20 min-h-[560px] w-full overflow-hidden md:mt-16" data-cursor={hovered !== null ? "SELECT" : "EXPLORE"}>
+      <div id="research-network" ref={stage} className="relative mt-12 h-[78svh] scroll-mt-20 min-h-[560px] w-full overflow-hidden md:mt-16 md:min-h-[600px]" data-cursor={hovered !== null ? "SELECT" : "EXPLORE"}>
         {gl && <DomainNetwork domains={researchDomains} selected={selected} hovered={hovered} onSelect={select} onHover={setHovered} active={inView} lowPower={lowPower} labelEls={labelEls} topicEls={topicEls} ringEls={ringEls} />}
 
         {/* DOM labels, positioned from the 3D scene every frame */}
@@ -127,58 +131,91 @@ export default function Research() {
           </div>
         </div>
 
-        {/* Info panel */}
+        {/* Info panel: fixed header + scrollable body + fixed footer, always inside the stage */}
         <AnimatePresence>
-          {domain && (
+          {domain && selected !== null && (
             <motion.div
               id="domain-panel"
               role="tabpanel"
+              aria-label={domain.title}
               key={domain.id}
-              className="panel absolute z-20 overflow-y-auto rounded-2xl p-6 md:p-8 max-md:inset-x-3 max-md:bottom-20 max-md:max-h-[58%] md:right-[max(var(--gutter),2rem)] md:top-1/2 md:w-[min(440px,40vw)] md:-translate-y-1/2"
+              className="panel absolute z-20 flex flex-col overflow-hidden rounded-2xl shadow-[0_30px_80px_rgb(0_0_0/0.45)] max-md:inset-x-3 max-md:bottom-[5.25rem] max-md:top-3 md:right-[max(var(--gutter),2rem)] md:top-6 md:max-h-[calc(100%-7.25rem)] md:w-[min(460px,40vw)]"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 60 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="flex items-start justify-between gap-4">
+              {/* header */}
+              <div className="flex shrink-0 items-start justify-between gap-4 border-b border-line px-6 pb-4 pt-5 md:px-7">
                 <div>
-                  <div className="font-mono text-[11px] tracking-[0.2em] text-cyan">DOMAIN {domain.index}</div>
-                  <h3 className="mt-2 font-display text-3xl font-medium tracking-tight text-ink">{domain.title}</h3>
+                  <div className="font-mono text-[11px] tracking-[0.2em] text-cyan">
+                    DOMAIN {domain.index} <span className="text-mute">/ 0{researchDomains.length}</span>
+                  </div>
+                  <h3 className="mt-1.5 font-display text-[clamp(1.5rem,2.2vw,1.9rem)] font-medium leading-tight tracking-tight text-ink">{domain.title}</h3>
                 </div>
-                <button type="button" onClick={() => setSelected(null)} aria-label="Close domain" className="rounded-full border border-line p-2 text-mute transition-colors hover:text-ink">
+                <button type="button" onClick={() => setSelected(null)} aria-label="Close domain" className="mt-1 shrink-0 rounded-full border border-line p-2 text-mute transition-colors hover:border-cyan/50 hover:text-ink">
                   <X size={14} />
                 </button>
               </div>
-              <p className="mt-4 text-[14.5px] leading-relaxed text-mute">{domain.summary}</p>
 
-              <div className="label mt-7 !text-[11px]">Research interests</div>
-              <ul className="mt-3 grid grid-cols-2 gap-2">
-                {domain.topics.map((t, i) => (
-                  <motion.li
-                    key={t}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.15 + i * 0.06 }}
-                    className="rounded-lg border border-line bg-bg/40 px-3 py-2.5 text-[13px] text-ink/90"
+              {/* body */}
+              <div className="relative flex min-h-0 flex-1 flex-col">
+                <div data-lenis-prevent className="no-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-5 md:px-7">
+                  <p className="text-[14.5px] leading-relaxed text-mute">{domain.summary}</p>
+
+                  <div className="label mt-6 !text-[11px]">Research interests</div>
+                  <ul className="mt-3 grid grid-cols-2 gap-2">
+                    {domain.topics.map((t, i) => (
+                      <motion.li
+                        key={t}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.12 + i * 0.05 }}
+                        className="rounded-lg border border-line bg-bg/40 px-3 py-2.5 text-[13px] leading-snug text-ink/90"
+                      >
+                        {t}
+                      </motion.li>
+                    ))}
+                  </ul>
+
+                  <div className="label mt-6 !text-[11px]">In my work</div>
+                  <ul className="mt-3 space-y-2.5 pb-4">
+                    {domain.evidence.map((e, i) => (
+                      <motion.li key={e} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.06 }} className="flex gap-3 text-[13.5px] leading-snug text-ink/85">
+                        <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-cyan" />
+                        {e}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+                {/* fade hints that the body scrolls */}
+                <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#0c1624] to-transparent" />
+              </div>
+
+              {/* footer */}
+              <div className="flex shrink-0 items-center justify-between gap-3 border-t border-line px-6 py-3.5 md:px-7">
+                <button type="button" onClick={() => scrollTo("#projects")} className="inline-flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.18em] text-cyan transition-colors hover:text-ink">
+                  Case studies <ArrowUpRight size={13} />
+                </button>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => select((selected + researchDomains.length - 1) % researchDomains.length)}
+                    aria-label="Previous domain"
+                    className="rounded-full border border-line p-2 text-mute transition-colors hover:border-cyan/50 hover:text-cyan"
                   >
-                    {t}
-                  </motion.li>
-                ))}
-              </ul>
-
-              <div className="label mt-7 !text-[11px]">In my work</div>
-              <ul className="mt-3 space-y-2.5">
-                {domain.evidence.map((e, i) => (
-                  <motion.li key={e} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 + i * 0.07 }} className="flex gap-3 text-[13.5px] leading-snug text-ink/85">
-                    <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-cyan" />
-                    {e}
-                  </motion.li>
-                ))}
-              </ul>
-
-              <button type="button" onClick={() => scrollTo("#projects")} className="mt-7 inline-flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.2em] text-cyan hover:text-ink">
-                See case studies <ArrowUpRight size={13} />
-              </button>
+                    <ChevronLeft size={14} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => select((selected + 1) % researchDomains.length)}
+                    aria-label="Next domain"
+                    className="rounded-full border border-line p-2 text-mute transition-colors hover:border-cyan/50 hover:text-cyan"
+                  >
+                    <ChevronRight size={14} />
+                  </button>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

@@ -39,7 +39,7 @@ export const timeline: Milestone[] = [
   {
     year: "2025",
     title: "Clinical AI Research",
-    text: "Scientific Reports paper on tongue-based CAD diagnosis; joined Fanap as AI Expert.",
+    text: "Scientific Reports paper on tongue-based CAD diagnosis; joined Abrpardis as AI Expert.",
     tags: ["Scientific Reports", "Agentic AI"],
     artifact: { label: "Patients", value: "906" },
   },
